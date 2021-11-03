@@ -1,0 +1,208 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OpenAPI Documentation",
+    "description": "API Spec for OpenAPI Documentation",
+    "version": "1.0.0"
+  },
+  "tags": [{
+      "name": "product",
+      "description": "Operations about product"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "servers": [{
+    "url": "http://localhost:3000/api"
+  }],
+  "paths": {
+    "/product": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "returns all product",
+        "description": "returns all product",
+        "operationId": "GetProducts",
+        "responses": {
+          "200": {
+            "description": "Get all products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "product"
+        ],
+        "summary": "create product",
+        "description": "create product",
+        "operationId": "CreateProduct",
+        "requestBody": {
+          "description": "Product to add to the store",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "return new product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "create user",
+        "description": "creates a new user",
+        "requestBody":{
+            "required": true,
+            "content": {
+                "application/json":{
+                    "schema":{
+                        "$ref": "#/components/schemas/User"
+                    }
+                }
+            }
+        },
+        "responses": {
+          "200": {
+            "description": "success create user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+        "put": {
+          "tags": [
+            "user"
+          ],
+          "summary": "updated user",
+          "description": "this can only be done by the logged in user",
+          "responses": {
+            "200": {
+              "description": "succes update user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "logs user into the system",
+        "description": "logs user into the system",
+        "responses": {
+          "200": {
+            "description": "login succes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WebResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
