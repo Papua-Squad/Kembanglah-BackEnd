@@ -10,6 +10,14 @@
       "description": "Operations about product"
     },
     {
+      "name": "category",
+      "description": "Operations about categories"
+    },
+    {
+      "name": "orders",
+      "description": "Operations about orders"
+    },
+    {
       "name": "user",
       "description": "Operations about user"
     }
@@ -55,7 +63,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Product"
+                "$ref": "#/components/schemas/CreateProduct"
               }
             }
           }
@@ -68,7 +76,127 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Product"
+                    "$ref": "#/components/schemas/CreateProduct"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "product"
+        ],
+        "summary": "update product",
+        "description": "update an existing product",
+        "operationId": "UpdateProduct",
+        "requestBody": {
+          "description": "Product to add to the store",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProduct"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateProduct"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category":{
+      "post":{
+        "tags": [
+          "category"
+        ],
+        "summary": "create category",
+        "description": "create category",
+        "requestBody":{
+          "required": true,
+          "content": {
+              "application/json":{
+                  "schema":{
+                      "$ref": "#/components/schemas/CreateCategory"
+                  }
+              }
+          }
+      },
+        "responses": {
+          "200": {
+            "description": "succes",
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/CreateCategory"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/{id}":{
+      "get":{
+        "tags": [
+          "category"
+        ],
+        "summary": "filter product by category id",
+        "description": "filter product by category id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema":{
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "succes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders":{
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "returns all orders",
+        "description": "returns all orders",
+        "responses": {
+          "200": {
+            "description": "Get all orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
                   }
                 }
               }
@@ -89,7 +217,7 @@
             "content": {
                 "application/json":{
                     "schema":{
-                        "$ref": "#/components/schemas/User"
+                        "$ref": "#/components/schemas/CreateOrUpdateUser"
                     }
                 }
             }
@@ -100,7 +228,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/CreateOrUpdateUser"
                 }
               }
             }
@@ -115,13 +243,52 @@
           ],
           "summary": "updated user",
           "description": "this can only be done by the logged in user",
+          "requestBody":{
+            "required": true,
+            "content": {
+                "application/json":{
+                    "schema":{
+                        "$ref": "#/components/schemas/CreateOrUpdateUser"
+                    }
+                }
+            }
+        },
           "responses": {
             "200": {
               "description": "succes update user",
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/CreateOrUpdateUser"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get":{
+          "tags": [
+            "user"
+          ],
+          "summary": "get user",
+          "description": "get user by username",
+          "parameters": [
+            {
+              "name": "username",
+              "in": "path",
+              "required": true,
+              "schema":{
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "succes",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreateOrUpdateUser"
                   }
                 }
               }
@@ -136,6 +303,20 @@
         ],
         "summary": "logs user into the system",
         "description": "logs user into the system",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "description": "username for login"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": true,
+            "description": "password for login"
+          }
+        ],
         "responses": {
           "200": {
             "description": "login succes",
@@ -178,7 +359,64 @@
           }
         }
       },
+      "CreateProduct": {
+        "type": "object",
+        "required": [
+          "name",
+          "price",
+          "stock",
+          "weight",
+          "type",
+          "description"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "stock": {
+            "type": "integer"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
       "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateCategory": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "Orders": {
         "type": "object",
         "properties": {
           "id": {
@@ -191,15 +429,36 @@
       },
       "User": {
         "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateOrUpdateUser": {
+        "type": "object",
         "required": [
-          "name"
+          "name",
+          "email",
+          "username",
+          "password"
         ],
         "properties": {
           "name": {
             "type": "string"
           },
-          "tag": {
+          "email": {
             "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8
           }
         }
       }
