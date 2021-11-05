@@ -5,7 +5,8 @@
     "description": "API Spec for OpenAPI Documentation",
     "version": "1.0.0"
   },
-  "tags": [{
+  "tags": [
+    {
       "name": "product",
       "description": "Operations about product"
     },
@@ -22,9 +23,11 @@
       "description": "Operations about user"
     }
   ],
-  "servers": [{
-    "url": "http://localhost:3000/api"
-  }],
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
   "paths": {
     "/product": {
       "get": {
@@ -116,30 +119,30 @@
         }
       }
     },
-    "/category":{
-      "post":{
+    "/category": {
+      "post": {
         "tags": [
           "category"
         ],
         "summary": "create category",
         "description": "create category",
-        "requestBody":{
+        "requestBody": {
           "required": true,
           "content": {
-              "application/json":{
-                  "schema":{
-                      "$ref": "#/components/schemas/CreateCategory"
-                  }
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategory"
               }
+            }
           }
-      },
+        },
         "responses": {
           "200": {
             "description": "succes",
             "content": {
               "application/json": {
                 "schema": {
-                    "$ref": "#/components/schemas/CreateCategory"
+                  "$ref": "#/components/schemas/CreateCategory"
                 }
               }
             }
@@ -147,8 +150,8 @@
         }
       }
     },
-    "/category/{id}":{
-      "get":{
+    "/category/{id}": {
+      "get": {
         "tags": [
           "category"
         ],
@@ -159,7 +162,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema":{
+            "schema": {
               "type": "integer"
             }
           }
@@ -181,7 +184,7 @@
         }
       }
     },
-    "/orders":{
+    "/orders": {
       "get": {
         "tags": [
           "orders"
@@ -212,15 +215,15 @@
         ],
         "summary": "create user",
         "description": "creates a new user",
-        "requestBody":{
-            "required": true,
-            "content": {
-                "application/json":{
-                    "schema":{
-                        "$ref": "#/components/schemas/CreateOrUpdateUser"
-                    }
-                }
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateUser"
+              }
             }
+          }
         },
         "responses": {
           "200": {
@@ -237,65 +240,65 @@
       }
     },
     "/user/{username}": {
-        "put": {
-          "tags": [
-            "user"
-          ],
-          "summary": "updated user",
-          "description": "this can only be done by the logged in user",
-          "requestBody":{
-            "required": true,
-            "content": {
-                "application/json":{
-                    "schema":{
-                        "$ref": "#/components/schemas/CreateOrUpdateUser"
-                    }
-                }
-            }
-        },
-          "responses": {
-            "200": {
-              "description": "succes update user",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CreateOrUpdateUser"
-                  }
-                }
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "updated user",
+        "description": "this can only be done by the logged in user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateUser"
               }
             }
           }
         },
-        "get":{
-          "tags": [
-            "user"
-          ],
-          "summary": "get user",
-          "description": "get user by username",
-          "parameters": [
-            {
-              "name": "username",
-              "in": "path",
-              "required": true,
-              "schema":{
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "succes",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CreateOrUpdateUser"
-                  }
+        "responses": {
+          "200": {
+            "description": "succes update user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrUpdateUser"
                 }
               }
             }
           }
         }
       },
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "get user",
+        "description": "get user by username",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "succes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrUpdateUser"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/login": {
       "get": {
         "tags": [
