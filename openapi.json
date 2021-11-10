@@ -66,7 +66,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateProduct"
+                "$ref": "#/components/schemas/CreateOrUpdateProduct"
               }
             }
           }
@@ -79,14 +79,16 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CreateProduct"
+                    "$ref": "#/components/schemas/Product"
                   }
                 }
               }
             }
           }
         }
-      },
+      }
+    },
+    "/product/{id}":{
       "put": {
         "tags": [
           "product"
@@ -100,7 +102,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateProduct"
+                "$ref": "#/components/schemas/CreateOrUpdateProduct"
               }
             }
           }
@@ -111,7 +113,108 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateProduct"
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags": [
+          "product"
+        ],
+        "summary": "delete product",
+        "description": "delete product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "delete product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/bestseller":{
+      "post": {
+        "tags": [
+          "product"
+        ],
+        "summary": "create best seller product",
+        "description": "create best seller product",
+        "operationId": "CreateProduct",
+        "requestBody": {
+          "description": "Best Seller Product to add to the store",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BestSeller"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "return new product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/bestseller/{id}": {
+      "put":{
+        "tags": [
+          "product"
+        ],
+        "summary": "update best seller product",
+        "description": "update an existing best seller product",
+        "operationId": "UpdateProduct",
+        "requestBody": {
+          "description": "Product to add to the store",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BestSeller"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -131,18 +234,47 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategory"
+                "$ref": "#/components/schemas/CreateorUpdateCategory"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "succes",
+            "description": "succes create category",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateCategory"
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "category"
+        ],
+        "summary": "update category",
+        "description": "update category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateorUpdateCategory"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes update category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
@@ -199,7 +331,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/Orders"
                   }
                 }
               }
@@ -231,7 +363,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateOrUpdateUser"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -262,7 +394,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateOrUpdateUser"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -274,7 +406,7 @@
           "user"
         ],
         "summary": "get user",
-        "description": "get user by username",
+        "description": "get user detail by username",
         "parameters": [
           {
             "name": "username",
@@ -287,11 +419,11 @@
         ],
         "responses": {
           "200": {
-            "description": "succes",
+            "description": "succes get user detail",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateOrUpdateUser"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -326,7 +458,28 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/WebResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "logs out",
+        "description": "logs out",
+        "responses": {
+          "200": {
+            "description": "logout succes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebResponse"
                 }
               }
             }
@@ -362,7 +515,7 @@
           }
         }
       },
-      "CreateProduct": {
+      "CreateOrUpdateProduct": {
         "type": "object",
         "required": [
           "name",
@@ -393,6 +546,14 @@
           }
         }
       },
+      "BestSeller":{
+        "type": "object",
+        "properties": {
+          "name":{
+            "type": "string"
+          }
+        }
+      },
       "Category": {
         "type": "object",
         "properties": {
@@ -401,10 +562,13 @@
           },
           "name": {
             "type": "string"
+          },
+          "type": {
+            "type": "string"
           }
         }
       },
-      "CreateCategory": {
+      "CreateorUpdateCategory": {
         "type": "object",
         "required": [
           "name",
@@ -436,7 +600,16 @@
           "id": {
             "type": "integer"
           },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
           "username": {
+            "type": "string"
+          },
+          "password": {
             "type": "string"
           }
         }
