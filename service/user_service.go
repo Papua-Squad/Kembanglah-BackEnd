@@ -1,8 +1,12 @@
 package service
 
-import "golang.org/x/net/context"
+import (
+	"kembanglah/model/web"
+
+	"golang.org/x/net/context"
+)
 
 type UserService interface {
-	Login(ctx context.Context)
-	Register(ctx context.Context)
+	Login(ctx context.Context, userId uint) web.User
+	Register(ctx context.Context, request web.UserCreateRequest) web.User
 }
