@@ -1,17 +1,21 @@
 package controller
 
 import (
+	"kembanglah/helper"
+	"kembanglah/model/web"
+	"kembanglah/service"
+	"net/http"
+
 	"github.com/labstack/echo/v4"
-	"kembanglah/app"
 )
 
 type UserControllerImpl struct {
-	Server app.Server
+	UserService service.UserService
 }
 
-func NewUserController(server app.Server) *UserControllerImpl {
+func NewUserController(userService service.UserService) UserController {
 	return &UserControllerImpl{
-		server,
+		UserService: userService,
 	}
 }
 
@@ -20,5 +24,11 @@ func (u *UserControllerImpl) Login(ctx echo.Context) error {
 }
 
 func (u *UserControllerImpl) Register(ctx echo.Context) error {
-	panic("implement me")
+	user := new(web.UserCreateRequest)
+	err := ctx.Bind(user)
+	helper.PanicIfError(err)
+
+	userResponse := u.UserService.Register(ctx.Request().Context(), *user)
+
+	return ctx.JSON(http.StatusCreated, userResponse)
 }
