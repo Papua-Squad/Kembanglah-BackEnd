@@ -4,8 +4,6 @@ import (
 	"kembanglah/app"
 	"kembanglah/controller"
 	"kembanglah/helper"
-	"kembanglah/repository"
-	"kembanglah/service"
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4/middleware"
@@ -18,12 +16,4 @@ func NewRouter(server *app.Server) {
 
 	homeController := controller.NewHomeController()
 	server.Echo.GET("/", homeController.Home)
-
-	//User
-	userRepository := repository.NewUserRepository(server)
-	userService := service.NewUserService(userRepository)
-	userController := controller.NewUserController(userService)
-
-	server.Echo.POST("/user", userController.Register)
-
 }
