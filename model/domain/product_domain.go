@@ -8,6 +8,7 @@ type Product struct {
 	Price       int
 	Stock       int
 	Weight      int
-	Type        int
 	Description string
+	UserID      uint
+	Categories  []Category
 }
