@@ -15,7 +15,16 @@ func main() {
 	server := app.NewServer(newConfig)
 
 	// Migrate database
-	server.DB.AutoMigrate(&domain.User{})
+	err = server.DB.Migrator().AutoMigrate(
+		&domain.Customer{},
+		&domain.Seller{},
+		&domain.Product{},
+		&domain.Category{},
+		&domain.Order{},
+		&domain.Transaction{},
+		&domain.Address{},
+	)
+	helper.PanicIfError(err)
 
 	router.NewRouter(server)
 	err = server.Start(newConfig.Server.Port)

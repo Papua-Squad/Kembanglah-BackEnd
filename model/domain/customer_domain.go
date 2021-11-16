@@ -6,10 +6,10 @@ import (
 
 type Customer struct {
 	gorm.Model
-	FirstName       string
-	LastName        string
-	Email           string
-	Username        string
-	Password        string
-	ShippingAddress []ShippingAddress
+	FirstName string
+	LastName  string
+	Email     string
+	Username  string
+	Password  string
+	Addresses []Address
 }

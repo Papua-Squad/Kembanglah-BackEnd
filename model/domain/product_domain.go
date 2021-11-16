@@ -9,6 +9,6 @@ type Product struct {
 	Stock       int
 	Weight      int
 	Description string
-	UserID      uint
-	Categories  []Category
+	SellerID    uint
+	Categories  []Category `gorm:"many2many;"`
 }

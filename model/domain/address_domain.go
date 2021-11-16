@@ -2,7 +2,7 @@ package domain
 
 import "gorm.io/gorm"
 
-type ShippingAddress struct {
+type Address struct {
 	gorm.Model
 	FirstName   string
 	LastName    string
@@ -11,5 +11,5 @@ type ShippingAddress struct {
 	City        string
 	ZipCode     uint
 	Country     string
-	UserID      uint
+	CustomerID  uint
 }

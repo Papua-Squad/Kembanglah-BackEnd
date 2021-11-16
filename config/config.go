@@ -10,11 +10,13 @@ type Config struct {
 		Port string `env:"SERVER_PORT"`
 	}
 	Database struct {
-		Name     string `env:"DATABASE_NAME"`
 		Host     string `env:"DATABASE_HOST"`
 		Port     string `env:"DATABASE_PORT"`
-		Username string `env:"DATABASE_USERNAME"`
-		Password string `env:"DATABASE_PASSWORD"`
+		Postgres struct {
+			DB       string `env:"POSTGRES_DB"`
+			User     string `env:"POSTGRES_USER"`
+			Password string `env:"POSTGRES_PASSWORD"`
+		}
 	}
 }
 
