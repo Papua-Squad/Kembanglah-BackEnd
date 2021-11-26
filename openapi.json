@@ -21,6 +21,10 @@
     {
       "name": "user",
       "description": "Operations about user"
+    },
+    {
+      "name": "customer",
+      "description": "Operations about customer"
     }
   ],
   "servers": [
@@ -486,6 +490,97 @@
           }
         }
       }
+    },
+    "/customer": {
+      "post": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "create user",
+        "description": "creates a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success create user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer/{username}": {
+      "put": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "updated user",
+        "description": "this can only be done by the logged in user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "succes update user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "get user",
+        "description": "get user detail by username",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "succes get user detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -600,7 +695,10 @@
           "id": {
             "type": "integer"
           },
-          "name": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
             "type": "string"
           },
           "email": {
@@ -617,13 +715,17 @@
       "CreateOrUpdateUser": {
         "type": "object",
         "required": [
-          "name",
+          "first_name",
+          "last_name",
           "email",
           "username",
           "password"
         ],
         "properties": {
-          "name": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
             "type": "string"
           },
           "email": {

@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"github.com/labstack/echo/v4"
 	"kembanglah/model/web"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
 )
 
 type HomeControllerImpl struct {
