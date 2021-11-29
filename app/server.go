@@ -1,9 +1,10 @@
 package app
 
 import (
+	"kembanglah/config"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
-	"kembanglah/config"
 )
 
 type Server struct {
