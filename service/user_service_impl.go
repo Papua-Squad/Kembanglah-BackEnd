@@ -12,10 +12,10 @@ import (
 )
 
 type SellerServiceImpl struct {
-	SellerRepository repository.SellerRepository
+	SellerRepository repository.UserRepository
 }
 
-func NewSellerService(sellerRepository repository.SellerRepository) SellerService {
+func NewSellerService(sellerRepository repository.UserRepository) UserService {
 	return &SellerServiceImpl{
 		SellerRepository: sellerRepository,
 	}
@@ -24,7 +24,7 @@ func NewSellerService(sellerRepository repository.SellerRepository) SellerServic
 func (service *SellerServiceImpl) Register(ctx context.Context, request web.SellerCreateRequest) web.Seller {
 
 	hash, _ := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
-	userRequest := domain.Seller{
+	userRequest := domain.User{
 		FirstName: request.FirstName,
 		LastName:  request.LastName,
 		Username:  request.Username,
@@ -45,13 +45,13 @@ func (service *SellerServiceImpl) Register(ctx context.Context, request web.Sell
 }
 
 func (service *SellerServiceImpl) Update(ctx context.Context, request web.SellerUpdateRequest) web.Seller {
-	var seller domain.Seller
+	var seller domain.User
 	seller.ID = request.ID
 
 	_, err := service.SellerRepository.FindByID(ctx, seller.ID)
 	helper.PanicIfError(err)
 
-	user, err := service.SellerRepository.Update(ctx, domain.Seller{
+	user, err := service.SellerRepository.Update(ctx, domain.User{
 		Model: gorm.Model{
 			ID: request.ID,
 		},
@@ -74,7 +74,7 @@ func (service *SellerServiceImpl) Update(ctx context.Context, request web.Seller
 }
 
 func (service *SellerServiceImpl) Delete(ctx context.Context, sellerId uint) {
-	var seller domain.Seller
+	var seller domain.User
 	seller.ID = sellerId
 
 	err := service.SellerRepository.Delete(ctx, seller)
@@ -130,7 +130,7 @@ func (service *SellerServiceImpl) FindAll(ctx context.Context) []web.Seller {
 }
 
 // func (service *UserServiceImpl) Login(ctx context.Context, userId uint) web.User {
-// 	user := domain.Seller{}
+// 	user := domain.User{}
 // 	user.ID = userId
 
 // 	user, err := service.UserRepository.FindByID(ctx, user)

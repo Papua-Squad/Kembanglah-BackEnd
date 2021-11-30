@@ -6,10 +6,8 @@ import (
 	"golang.org/x/net/context"
 )
 
-type SellerService interface {
-	// Login(ctx context.Context, userId uint) web.User
-	Register(ctx context.Context, request web.SellerCreateRequest) web.Seller
-	Update(ctx context.Context, request web.SellerUpdateRequest) web.Seller
+type UserService interface {
+	Update(ctx context.Context, request web.UserUpdateRequest) web.User
 	Delete(ctx context.Context, sellerId uint)
 	FindByID(ctx context.Context, sellerId uint) web.Seller
 	FindByUsername(ctx context.Context, username string) web.Seller

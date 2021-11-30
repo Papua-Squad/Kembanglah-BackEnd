@@ -33,9 +33,9 @@ func (repository *ProductRepositoryImpl) FindByID(ctx context.Context, productID
 }
 
 func (repository *ProductRepositoryImpl) FindBySeller(ctx context.Context, sellerID uint) (products []domain.Product, err error) {
-	return products, repository.Server.DB.WithContext(ctx).Where("seller_id = ?", sellerID).Find(&products).Error
+	return products, repository.Server.DB.WithContext(ctx).Find(&products, "seller_id = ?", sellerID).Error
 }
 
 func (repository *ProductRepositoryImpl) FindByCategory(ctx context.Context, categoryID uint) (products []domain.Product, err error) {
-	return products, repository.Server.DB.WithContext(ctx).Where("category_id = ?", categoryID).Find(&products).Error
+	return products, repository.Server.DB.WithContext(ctx).Find(&products, "category_id = ?", categoryID).Error
 }

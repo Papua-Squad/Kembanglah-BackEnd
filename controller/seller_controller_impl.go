@@ -11,40 +11,48 @@ import (
 )
 
 type SellerControllerImpl struct {
-	SellerService service.SellerService
+	SellerService service.UserService
 }
 
-func NewSellerController(sellerService service.SellerService) SellerController {
+func NewSellerController(sellerService service.UserService) SellerController {
 	return &SellerControllerImpl{
 		SellerService: sellerService,
 	}
 }
 
-func (u *SellerControllerImpl) Login(ctx echo.Context) error {
+func (controller *SellerControllerImpl) Login(ctx echo.Context) error {
 	panic("implement me")
 }
 
-func (u *SellerControllerImpl) Register(ctx echo.Context) error {
+func (controller *SellerControllerImpl) Register(ctx echo.Context) error {
 
-	user := new(web.SellerCreateRequest)
-	if err := ctx.Bind(user); err != nil {
-		return ctx.JSON(http.StatusBadRequest, err.Error())
+	seller := new(web.SellerRegisterRequest)
+	if err := ctx.Bind(seller); err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
 	}
 
-	if err := ctx.Validate(user); err != nil {
-		return ctx.JSON(http.StatusBadRequest, err.Error())
+	if err := ctx.Validate(seller); err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
 	}
 
-	userResponse := u.SellerService.Register(ctx.Request().Context(), *user)
+	sellerResponse := controller.SellerService.Register(ctx.Request().Context(), *seller)
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "succes create user",
-		Data:    userResponse,
+		Message: "success create seller",
+		Data:    sellerResponse,
 	})
 }
 
-func (u *SellerControllerImpl) Update(ctx echo.Context) error {
+func (controller *SellerControllerImpl) Update(ctx echo.Context) error {
 	seller := new(web.SellerUpdateRequest)
 
 	sellerId, err := strconv.Atoi(ctx.Param("sellerId"))
@@ -59,7 +67,7 @@ func (u *SellerControllerImpl) Update(ctx echo.Context) error {
 		return ctx.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	userResponse := u.SellerService.Update(ctx.Request().Context(), *seller)
+	userResponse := controller.SellerService.Update(ctx.Request().Context(), *seller)
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
@@ -68,30 +76,30 @@ func (u *SellerControllerImpl) Update(ctx echo.Context) error {
 	})
 }
 
-func (u *SellerControllerImpl) Delete(ctx echo.Context) error {
+func (controller *SellerControllerImpl) Delete(ctx echo.Context) error {
 	sellerId, err := strconv.Atoi(ctx.Param("sellerId"))
 	helper.PanicIfError(err)
 
-	u.SellerService.Delete(ctx.Request().Context(), uint(sellerId))
+	controller.SellerService.Delete(ctx.Request().Context(), uint(sellerId))
 	return ctx.JSON(http.StatusOK, "OK")
 }
 
-func (u *SellerControllerImpl) FindByID(ctx echo.Context) error {
+func (controller *SellerControllerImpl) FindByID(ctx echo.Context) error {
 	sellerId, err := strconv.Atoi(ctx.Param("sellerId"))
 	helper.PanicIfError(err)
 
-	sellerResponse := u.SellerService.FindByID(ctx.Request().Context(), uint(sellerId))
+	sellerResponse := controller.SellerService.FindByID(ctx.Request().Context(), uint(sellerId))
 	return ctx.JSON(http.StatusOK, sellerResponse)
 }
 
-func (u *SellerControllerImpl) FindByUsername(ctx echo.Context) error {
+func (controller *SellerControllerImpl) FindByUsername(ctx echo.Context) error {
 	username := ctx.Param("username")
 
-	sellerResponse := u.SellerService.FindByUsername(ctx.Request().Context(), string(username))
+	sellerResponse := controller.SellerService.FindByUsername(ctx.Request().Context(), string(username))
 	return ctx.JSON(http.StatusOK, sellerResponse)
 }
 
-func (u *SellerControllerImpl) FindAll(ctx echo.Context) error {
-	sellerResponse := u.SellerService.FindAll(ctx.Request().Context())
+func (controller *SellerControllerImpl) FindAll(ctx echo.Context) error {
+	sellerResponse := controller.SellerService.FindAll(ctx.Request().Context())
 	return ctx.JSON(http.StatusOK, sellerResponse)
 }

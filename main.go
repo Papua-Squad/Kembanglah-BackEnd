@@ -16,13 +16,7 @@ func main() {
 
 	// Migrate database
 	err = server.DB.Migrator().AutoMigrate(
-		&domain.Customer{},
-		&domain.Seller{},
-		&domain.Product{},
-		&domain.Category{},
-		&domain.Order{},
-		&domain.Transaction{},
-		&domain.Address{},
+		&domain.User{},
 	)
 	helper.PanicIfError(err)
 

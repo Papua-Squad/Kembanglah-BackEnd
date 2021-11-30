@@ -20,7 +20,7 @@ func NewRouter(server *app.Server) {
 	server.Echo.GET("/", homeController.Home)
 
 	//seller
-	sellerRepository := repository.NewSellerRepository(server)
+	sellerRepository := repository.NewUserRepository(server)
 	sellerService := service.NewSellerService(sellerRepository)
 	sellerController := controller.NewSellerController(sellerService)
 

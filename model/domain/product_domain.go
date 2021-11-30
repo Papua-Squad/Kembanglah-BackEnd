@@ -9,6 +9,7 @@ type Product struct {
 	Stock       int
 	Weight      int
 	Description string
+	ImageUrl    string
+	Categories  []Category `gorm:"many2many:product_categories;"`
 	SellerID    uint
-	Categories  []Category `gorm:"many2many;"`
 }
