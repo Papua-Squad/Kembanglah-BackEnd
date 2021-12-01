@@ -9,10 +9,27 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-q",
+          "-d",
+          "kembanglah",
+          "-U",
+          "postgres"
+        ]
+      timeout: 10s
+      interval: 5s
+      retries: 5
   web:
     container_name: web_container
     build: .
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - default

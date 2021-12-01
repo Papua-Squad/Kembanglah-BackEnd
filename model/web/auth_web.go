@@ -10,9 +10,9 @@ type RegisterRequest struct {
 
 type RegisterResponse struct {
 	ID       uint   `json:"id"`
-	FullName string `json:"full_name" validate:"required"`
-	Email    string `json:"email" validate:"required,email"`
-	Username string `json:"username" validate:"required"`
+	FullName string `json:"full_name"`
+	Email    string `json:"email" `
+	Username string `json:"username"`
 }
 
 type LoginRequest struct {
