@@ -7,6 +7,7 @@ type User struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Role     string `json:"role"`
+	ImageUrl string `json:"image_url"`
 }
 
 type UserUpdateRequest struct {

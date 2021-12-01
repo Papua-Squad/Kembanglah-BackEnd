@@ -11,4 +11,5 @@ type User struct {
 	Username string `gorm:"unique"`
 	Password string
 	Role     string
+	ImageUrl string
 }

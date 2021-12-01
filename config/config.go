@@ -1,8 +1,9 @@
 package config
 
 import (
-	"github.com/golobby/dotenv"
 	"os"
+
+	"github.com/golobby/dotenv"
 )
 
 type Config struct {
@@ -18,6 +19,7 @@ type Config struct {
 			Password string `env:"POSTGRES_PASSWORD"`
 		}
 	}
+	JwtSecret string `env:"JWT_SECRET"`
 }
 
 func NewConfig() (*Config, error) {

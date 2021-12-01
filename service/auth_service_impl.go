@@ -6,9 +6,6 @@ import (
 	"kembanglah/model/domain"
 	"kembanglah/model/web"
 	"kembanglah/repository"
-	"time"
-
-	"github.com/golang-jwt/jwt"
 )
 
 type AuthServiceImpl struct {
@@ -29,24 +26,13 @@ func (service *AuthServiceImpl) Login(ctx context.Context, request web.LoginRequ
 	if err != nil {
 		return response, err
 	}
-
-	claims := domain.JwtCustomClaims{
-		Id:       userDetails.ID,
-		FullName: userDetails.FullName,
-		Role:     userDetails.Role,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	t, err := token.SignedString([]byte("sangatrahasia"))
+	token, err := helper.GenerateToken(userDetails)
 	if err != nil {
 		return response, err
 	}
 
 	return web.LoginResponse{
-		AuthToken: t,
+		AuthToken: token,
 	}, err
 
 }
