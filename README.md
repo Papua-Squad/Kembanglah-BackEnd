@@ -1,6 +1,5 @@
 # Dokumentasi BE
-BackEnd dapat diakses di https://kembanglah.herokuapp.com
-
+BackEnd dapat diakses di http://159.223.82.24:3000
 # Endpoint
 
 ### Login 
