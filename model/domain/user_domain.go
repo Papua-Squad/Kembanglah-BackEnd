@@ -7,8 +7,8 @@ import (
 type User struct {
 	gorm.Model
 	FullName string
-	Email    string
-	Username string
+	Email    string `gorm:"unique"`
+	Username string `gorm:"unique"`
 	Password string
 	Role     string
 }
