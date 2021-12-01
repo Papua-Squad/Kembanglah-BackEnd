@@ -4,12 +4,12 @@ RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
-COPY . .
+COPY . ./
 
-RUN go mod tidy
+RUN go mod download
 
-RUN go build -o binary
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o main main.go
 
 EXPOSE 3000
 
-ENTRYPOINT ["app/binary"]
+ENTRYPOINT ["/app/main"]
