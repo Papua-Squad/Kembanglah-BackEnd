@@ -11,5 +11,5 @@ type Product struct {
 	Description string
 	ImageUrl    string
 	Categories  []Category `gorm:"many2many:product_categories;"`
-	SellerID    uint
+	UserID      uint
 }

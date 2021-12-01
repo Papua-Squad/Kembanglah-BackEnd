@@ -8,8 +8,8 @@ import (
 
 type UserService interface {
 	Update(ctx context.Context, request web.UserUpdateRequest) web.User
-	Delete(ctx context.Context, sellerId uint)
-	FindByID(ctx context.Context, sellerId uint) web.Seller
-	FindByUsername(ctx context.Context, username string) web.Seller
-	FindAll(ctx context.Context) []web.Seller
+	Delete(ctx context.Context, userId uint)
+	FindByID(ctx context.Context, userId uint) web.User
+	FindByUsername(ctx context.Context, username string) web.User
+	FindAll(ctx context.Context) []web.User
 }

@@ -6,137 +6,95 @@ import (
 	"kembanglah/model/web"
 	"kembanglah/repository"
 
-	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/net/context"
 	"gorm.io/gorm"
 )
 
-type SellerServiceImpl struct {
-	SellerRepository repository.UserRepository
+type UserServiceImpl struct {
+	UserRepository repository.UserRepository
 }
 
-func NewSellerService(sellerRepository repository.UserRepository) UserService {
-	return &SellerServiceImpl{
-		SellerRepository: sellerRepository,
+func NewUserService(userRepository repository.UserRepository) UserService {
+	return &UserServiceImpl{
+		UserRepository: userRepository,
 	}
 }
 
-func (service *SellerServiceImpl) Register(ctx context.Context, request web.SellerCreateRequest) web.Seller {
+func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpdateRequest) web.User {
+	var usr domain.User
+	usr.ID = request.ID
 
-	hash, _ := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
-	userRequest := domain.User{
-		FirstName: request.FirstName,
-		LastName:  request.LastName,
-		Username:  request.Username,
-		Email:     request.Email,
-		Password:  string(hash),
-	}
-	user, err := service.SellerRepository.Create(ctx, userRequest)
+	_, err := service.UserRepository.FindByID(ctx, usr.ID)
 	helper.PanicIfError(err)
 
-	return web.Seller{
-		ID:        user.ID,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-		Username:  user.Username,
-		Email:     user.Email,
-		Password:  user.Password,
-	}
-}
-
-func (service *SellerServiceImpl) Update(ctx context.Context, request web.SellerUpdateRequest) web.Seller {
-	var seller domain.User
-	seller.ID = request.ID
-
-	_, err := service.SellerRepository.FindByID(ctx, seller.ID)
-	helper.PanicIfError(err)
-
-	user, err := service.SellerRepository.Update(ctx, domain.User{
+	user, err := service.UserRepository.Update(ctx, domain.User{
 		Model: gorm.Model{
 			ID: request.ID,
 		},
-		FirstName: request.FirstName,
-		LastName:  request.LastName,
-		Username:  request.Username,
-		Email:     request.Email,
-		Password:  request.Password,
+		FullName: request.FullName,
+		Username: request.Username,
+		Email:    request.Email,
+		Password: request.Password,
 	})
-	helper.PanicIfError(err)
 
-	return web.Seller{
-		ID:        user.ID,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-		Username:  user.Username,
-		Email:     user.Email,
-		Password:  user.Password,
+	return web.User{
+		ID:       user.ID,
+		FullName: user.FullName,
+		Username: user.Username,
+		Email:    user.Email,
+		Password: user.Password,
 	}
 }
 
-func (service *SellerServiceImpl) Delete(ctx context.Context, sellerId uint) {
-	var seller domain.User
-	seller.ID = sellerId
+func (service *UserServiceImpl) Delete(ctx context.Context, userId uint) {
+	var user domain.User
+	user.ID = userId
 
-	err := service.SellerRepository.Delete(ctx, seller)
+	err := service.UserRepository.Delete(ctx, user)
 	helper.PanicIfError(err)
 }
 
-func (service *SellerServiceImpl) FindByID(ctx context.Context, sellerId uint) web.Seller {
-	user, err := service.SellerRepository.FindByID(ctx, sellerId)
+func (service *UserServiceImpl) FindByID(ctx context.Context, userId uint) web.User {
+	user, err := service.UserRepository.FindByID(ctx, userId)
 	helper.PanicIfError(err)
 
-	return web.Seller{
-		ID:        user.ID,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-		Username:  user.Username,
-		Email:     user.Email,
-		Password:  user.Password,
+	return web.User{
+		ID:       user.ID,
+		FullName: user.FullName,
+		Username: user.Username,
+		Email:    user.Email,
+		Password: user.Password,
 	}
 }
 
-func (service *SellerServiceImpl) FindByUsername(ctx context.Context, username string) web.Seller {
-	user, err := service.SellerRepository.FindByUsername(ctx, username)
+func (service *UserServiceImpl) FindByUsername(ctx context.Context, username string) web.User {
+	user, err := service.UserRepository.FindByUsername(ctx, username)
 	helper.PanicIfError(err)
 
-	return web.Seller{
-		ID:        user.ID,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-		Username:  user.Username,
-		Email:     user.Email,
-		Password:  user.Password,
+	return web.User{
+		ID:       user.ID,
+		FullName: user.FullName,
+		Username: user.Username,
+		Email:    user.Email,
+		Password: user.Password,
 	}
 }
 
-func (service *SellerServiceImpl) FindAll(ctx context.Context) []web.Seller {
-	var newSeller []web.Seller
+func (service *UserServiceImpl) FindAll(ctx context.Context) []web.User {
+	var newUser []web.User
 
-	seller, err := service.SellerRepository.FindAll(ctx)
+	user, err := service.UserRepository.FindAll(ctx)
 	helper.PanicIfError(err)
 
-	for _, data := range seller {
-		newSeller = append(newSeller, web.Seller{
-			ID:        data.ID,
-			FirstName: data.FirstName,
-			LastName:  data.LastName,
-			Username:  data.Username,
-			Email:     data.Email,
-			Password:  data.Password,
+	for _, data := range user {
+		newUser = append(newUser, web.User{
+			ID:       data.ID,
+			FullName: data.FullName,
+			Username: data.Username,
+			Email:    data.Email,
+			Password: data.Password,
 		})
 	}
-	return newSeller
+	return newUser
 
 }
-
-// func (service *UserServiceImpl) Login(ctx context.Context, userId uint) web.User {
-// 	user := domain.User{}
-// 	user.ID = userId
-
-// 	user, err := service.UserRepository.FindByID(ctx, user)
-// 	helper.PanicIfError(err)
-
-// 	return web.User{
-// 		ID: user.ID,
-// 	}
-// }

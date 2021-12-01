@@ -19,24 +19,18 @@ func NewRouter(server *app.Server) {
 	homeController := controller.NewHomeController()
 	server.Echo.GET("/", homeController.Home)
 
-	//seller
-	sellerRepository := repository.NewUserRepository(server)
-	sellerService := service.NewSellerService(sellerRepository)
-	sellerController := controller.NewSellerController(sellerService)
+	//user
+	authRepository := repository.NewUserRepository(server)
+	authService := service.NewAuthService(authRepository)
+	authController := controller.NewAuthController(authService)
 
-	server.Echo.POST("/api/seller", sellerController.Register)
-	server.Echo.PUT("/api/seller/:sellerId", sellerController.Update)
-	server.Echo.GET("/api/seller/:sellerId", sellerController.FindByID)
-	server.Echo.GET("/api/seller/:username", sellerController.FindByUsername)
-	server.Echo.GET("/api/seller/findAll", sellerController.FindAll)
-	server.Echo.DELETE("/api/seller/:sellerId", sellerController.Delete)
+	server.Echo.POST("/api/user", authController.Register)
 
-	//customer
-	customerRepository := repository.NewCustomerRepository(server)
-	customerService := service.NewCustomerService(customerRepository)
-	customerController := controller.NewCustomerController(customerService)
+	//product
+	productRepository := repository.NewProductRepository(server)
+	productService := service.NewProductService(&productRepository)
+	productController := controller.NewProductController(productService)
 
-	server.Echo.POST("/api/customer", customerController.Register)
-	server.Echo.GET("/api/customer/:customerId", customerController.FindByID)
-	server.Echo.PUT("/api/customer/:customerId", customerController.Update)
+	server.Echo.POST("/api/product", productController.Create)
+
 }
