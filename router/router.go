@@ -39,7 +39,7 @@ func NewRouter(server *app.Server) {
 		SigningKey: []byte("sangatrahasia"),
 	}
 
-	// Create Restricted Group, mean user must login before using an endpoint
+	// Create Restricted Group, which mean user must login before using an endpoint
 	restricted := server.Echo.Group("/api")
 	restricted.Use(middleware.JWTWithConfig(jwtConfig))
 

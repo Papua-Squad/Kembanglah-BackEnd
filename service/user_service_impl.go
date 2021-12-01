@@ -37,6 +37,8 @@ func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpda
 		Password: request.Password,
 	})
 
+	helper.PanicIfError(err)
+
 	return web.User{
 		ID:       user.ID,
 		FullName: user.FullName,
