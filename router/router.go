@@ -4,6 +4,7 @@ import (
 	"kembanglah/app"
 	"kembanglah/controller"
 	"kembanglah/helper"
+	"kembanglah/model/domain"
 	"kembanglah/repository"
 	"kembanglah/service"
 
@@ -16,21 +17,32 @@ func NewRouter(server *app.Server) {
 	server.Echo.Use(middleware.Recover())
 	server.Echo.Validator = &helper.CustomValidator{Validator: validator.New()}
 
+	// Initialize
 	homeController := controller.NewHomeController()
-	server.Echo.GET("/", homeController.Home)
 
-	//user
 	authRepository := repository.NewUserRepository(server)
 	authService := service.NewAuthService(authRepository)
 	authController := controller.NewAuthController(authService)
 
-	server.Echo.POST("/api/user", authController.Register)
-
-	//product
 	productRepository := repository.NewProductRepository(server)
 	productService := service.NewProductService(&productRepository)
 	productController := controller.NewProductController(productService)
 
-	server.Echo.POST("/api/product", productController.Create)
+	server.Echo.GET("/", homeController.Home)
+
+	// Authentication
+	server.Echo.POST("/register", authController.Register)
+	server.Echo.POST("/login", authController.Login)
+
+	jwtConfig := middleware.JWTConfig{
+		Claims:     &domain.JwtCustomClaims{},
+		SigningKey: []byte("sangatrahasia"),
+	}
+
+	// Create Restricted Group, mean user must login before using an endpoint
+	restricted := server.Echo.Group("/api")
+	restricted.Use(middleware.JWTWithConfig(jwtConfig))
+
+	restricted.POST("/product", productController.Create)
 
 }

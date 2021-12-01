@@ -19,11 +19,40 @@ func NewAuthController(authService service.AuthService) AuthController {
 }
 
 func (controller *AuthControllerImpl) Login(ctx echo.Context) error {
-	panic("implement me")
+	user := new(web.LoginRequest)
+	if err := ctx.Bind(user); err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
+
+	if err := ctx.Validate(user); err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
+
+	loginResponse, err := controller.AuthService.Login(ctx.Request().Context(), *user)
+	if err != nil {
+		return ctx.JSON(http.StatusUnauthorized, web.Response{
+			Code:    http.StatusUnauthorized,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
+
+	return ctx.JSON(http.StatusOK, web.Response{
+		Code:    http.StatusOK,
+		Message: "success login",
+		Data:    loginResponse,
+	})
 }
 
 func (controller *AuthControllerImpl) Register(ctx echo.Context) error {
-
 	user := new(web.RegisterRequest)
 	if err := ctx.Bind(user); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
@@ -41,11 +70,18 @@ func (controller *AuthControllerImpl) Register(ctx echo.Context) error {
 		})
 	}
 
-	userResponse := controller.AuthService.Register(ctx.Request().Context(), *user)
+	registerResponse, err := controller.AuthService.Register(ctx.Request().Context(), *user)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "success create user",
-		Data:    userResponse,
+		Message: "success login",
+		Data:    registerResponse,
 	})
 }
