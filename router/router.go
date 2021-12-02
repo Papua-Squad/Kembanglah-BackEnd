@@ -36,7 +36,7 @@ func NewRouter(server *app.Server) {
 
 	jwtConfig := middleware.JWTConfig{
 		Claims:     &domain.JwtCustomClaims{},
-		SigningKey: []byte("sangatrahasia"),
+		SigningKey: []byte(server.Config.JwtSecret),
 	}
 
 	// Create Restricted Group, which mean user must login before using an endpoint
