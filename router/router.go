@@ -28,6 +28,10 @@ func NewRouter(server *app.Server) {
 	productService := service.NewProductService(&productRepository)
 	productController := controller.NewProductController(productService)
 
+	categoryRepository := repository.NewCategoryRepository(server)
+	categoryService := service.NewCategoryService(&categoryRepository)
+	categoryController := controller.NewCategoryController(categoryService)
+
 	server.Echo.GET("/", homeController.Home)
 
 	// Authentication
@@ -47,5 +51,13 @@ func NewRouter(server *app.Server) {
 	restricted.GET("/files/*", homeController.Files)
 
 	restricted.POST("/product", productController.Create)
+	restricted.PUT("/product/:productID", productController.Update)
+	restricted.DELETE("/product/:productID", productController.Delete)
+	restricted.GET("/product/:productID", productController.FindByID)
+	restricted.GET("/product/findAll", productController.FindAll)
 
+	//category
+	restricted.POST("/category", categoryController.Create)
+	restricted.PUT("/category/:categoryID", categoryController.Update)
+	restricted.GET("/category/:categoryID", categoryController.FindByID)
 }

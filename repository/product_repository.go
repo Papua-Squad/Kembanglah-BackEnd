@@ -12,4 +12,5 @@ type ProductRepository interface {
 	FindByID(ctx context.Context, productID uint) (product domain.Product, err error)
 	FindBySeller(ctx context.Context, sellerID uint) (products []domain.Product, err error)
 	FindByCategory(ctx context.Context, categoryID uint) (products []domain.Product, err error)
+	FindAll(ctx context.Context) (products []domain.Product, err error)
 }
