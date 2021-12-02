@@ -59,5 +59,6 @@ func NewRouter(server *app.Server) {
 	//category
 	restricted.POST("/category", categoryController.Create)
 	restricted.PUT("/category/:categoryID", categoryController.Update)
+	restricted.DELETE("/category/:categoryID", categoryController.Delete)
 	restricted.GET("/category/:categoryID", categoryController.FindByID)
 }

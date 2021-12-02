@@ -72,6 +72,17 @@ func (controller *CategoryControllerImpl) Update(ctx echo.Context) error {
 	})
 }
 
+func (controller *CategoryControllerImpl) Delete(ctx echo.Context) error {
+	categoryID, err := strconv.Atoi(ctx.Param("categoryID"))
+	helper.PanicIfError(err)
+
+	controller.CategoryService.Delete(ctx.Request().Context(), uint(categoryID))
+	return ctx.JSON(http.StatusOK, web.Response{
+		Code:    http.StatusOK,
+		Message: "OK",
+	})
+}
+
 func (controller *CategoryControllerImpl) FindByID(ctx echo.Context) error {
 	categoryID, err := strconv.Atoi(ctx.Param("categoryID"))
 	helper.PanicIfError(err)
