@@ -43,6 +43,9 @@ func NewRouter(server *app.Server) {
 	restricted := server.Echo.Group("/api")
 	restricted.Use(middleware.JWTWithConfig(jwtConfig))
 
+	// Endpoint untuk files
+	restricted.GET("/files/*", homeController.Files)
+
 	restricted.POST("/product", productController.Create)
 
 }
