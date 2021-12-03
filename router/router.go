@@ -62,8 +62,8 @@ func NewRouter(server *app.Server) {
 	productEndpoint.PUT("/:productID", productController.Update)
 	productEndpoint.DELETE("/:productID", productController.Delete)
 	productEndpoint.GET("/:productID", productController.FindByID)
-	productEndpoint.PUT("/:sellerID", productController.FindBySeller)
-	productEndpoint.DELETE("/:categoryID", productController.FindByCategory)
+	productEndpoint.GET("/:sellerID", productController.FindBySeller)
+	productEndpoint.GET("/:categoryID", productController.FindByCategory)
 	productEndpoint.GET("/", productController.FindAll)
 
 }

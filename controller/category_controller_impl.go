@@ -42,7 +42,7 @@ func (controller *CategoryControllerImpl) Create(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "success create product",
+		Message: "success create category",
 		Data:    categoryResponse,
 	})
 }
