@@ -50,8 +50,7 @@ func (controller *CategoryControllerImpl) Create(ctx echo.Context) error {
 func (controller *CategoryControllerImpl) Update(ctx echo.Context) error {
 	category := new(web.CategoryUpdateRequest)
 
-	categoryID, err := strconv.Atoi(ctx.Param("categoryID"))
-	helper.PanicIfError(err)
+	categoryID, _ := strconv.Atoi(ctx.Param("categoryID"))
 	category.ID = uint(categoryID)
 
 	if err := helper.BindAndValidate(ctx, category); err != nil {
@@ -79,8 +78,7 @@ func (controller *CategoryControllerImpl) Update(ctx echo.Context) error {
 }
 
 func (controller *CategoryControllerImpl) Delete(ctx echo.Context) error {
-	categoryID, err := strconv.Atoi(ctx.Param("categoryID"))
-	helper.PanicIfError(err)
+	categoryID, _ := strconv.Atoi(ctx.Param("categoryID"))
 
 	if err := controller.CategoryService.Delete(ctx.Request().Context(), uint(categoryID)); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
@@ -96,8 +94,7 @@ func (controller *CategoryControllerImpl) Delete(ctx echo.Context) error {
 }
 
 func (controller *CategoryControllerImpl) FindByID(ctx echo.Context) error {
-	categoryID, err := strconv.Atoi(ctx.Param("categoryID"))
-	helper.PanicIfError(err)
+	categoryID, _ := strconv.Atoi(ctx.Param("categoryID"))
 
 	categoryResponse, err := controller.CategoryService.FindByID(ctx.Request().Context(), uint(categoryID))
 	if err != nil {

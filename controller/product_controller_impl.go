@@ -71,8 +71,7 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 func (controller *ProductControllerImpl) Update(ctx echo.Context) error {
 	product := new(web.ProductUpdateRequest)
 
-	productID, err := strconv.Atoi(ctx.Param("productID"))
-	helper.PanicIfError(err)
+	productID, _ := strconv.Atoi(ctx.Param("productID"))
 	product.ID = uint(productID)
 
 	if err := helper.BindAndValidate(ctx, product); err != nil {
@@ -100,8 +99,7 @@ func (controller *ProductControllerImpl) Update(ctx echo.Context) error {
 }
 
 func (controller *ProductControllerImpl) Delete(ctx echo.Context) error {
-	productID, err := strconv.Atoi(ctx.Param("productID"))
-	helper.PanicIfError(err)
+	productID, _ := strconv.Atoi(ctx.Param("productID"))
 
 	if err := controller.ProductService.Delete(ctx.Request().Context(), uint(productID)); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
@@ -118,8 +116,7 @@ func (controller *ProductControllerImpl) Delete(ctx echo.Context) error {
 }
 
 func (controller *ProductControllerImpl) FindByID(ctx echo.Context) error {
-	productID, err := strconv.Atoi(ctx.Param("productID"))
-	helper.PanicIfError(err)
+	productID, _ := strconv.Atoi(ctx.Param("productID"))
 
 	productResponse, err := controller.ProductService.FindByID(ctx.Request().Context(), uint(productID))
 	if err != nil {
@@ -138,8 +135,7 @@ func (controller *ProductControllerImpl) FindByID(ctx echo.Context) error {
 }
 
 func (controller *ProductControllerImpl) FindBySeller(ctx echo.Context) error {
-	sellerID, err := strconv.Atoi(ctx.Param("sellerID"))
-	helper.PanicIfError(err)
+	sellerID, _ := strconv.Atoi(ctx.Param("sellerID"))
 
 	productResponse, err := controller.ProductService.FindByID(ctx.Request().Context(), uint(sellerID))
 	if err != nil {
@@ -158,8 +154,7 @@ func (controller *ProductControllerImpl) FindBySeller(ctx echo.Context) error {
 }
 
 func (controller *ProductControllerImpl) FindByCategory(ctx echo.Context) error {
-	categoryID, err := strconv.Atoi(ctx.Param("categoryID"))
-	helper.PanicIfError(err)
+	categoryID, _ := strconv.Atoi(ctx.Param("categoryID"))
 
 	productResponse, err := controller.ProductService.FindByID(ctx.Request().Context(), uint(categoryID))
 	if err != nil {
