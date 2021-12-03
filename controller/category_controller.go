@@ -7,4 +7,5 @@ type CategoryController interface {
 	Update(ctx echo.Context) error
 	Delete(ctx echo.Context) error
 	FindByID(ctx echo.Context) error
+	FindAll(ctx echo.Context) error
 }

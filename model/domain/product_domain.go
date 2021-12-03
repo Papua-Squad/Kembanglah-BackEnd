@@ -10,6 +10,6 @@ type Product struct {
 	Weight      int
 	Description string
 	ImageUrl    string
-	Categories  []Category `gorm:"many2many:product_categories;"`
-	UserID      uint
+	CategoryID  uint
+	SellerID    uint
 }

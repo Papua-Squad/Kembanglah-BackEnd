@@ -19,7 +19,7 @@ Request Body:
 Response Body:
 ```json
 {
-    "auth_token": "jwt token",
+    "auth_token": "jwt token"
 }
 ```
 
@@ -46,9 +46,9 @@ Request Body:
 Response Body:
 ```json
 {
-    "id": "1"
+    "id": "1",
     "full_name": "nama anda",
     "email": "email@email.com",
-    "username": "mitra",
+    "username": "mitra"
 }
 ```

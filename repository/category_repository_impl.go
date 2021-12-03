@@ -10,8 +10,8 @@ type CategoryRepositoryImpl struct {
 	Server *app.Server
 }
 
-func NewCategoryRepository(server *app.Server) CategoryRepositoryImpl {
-	return CategoryRepositoryImpl{
+func NewCategoryRepository(server *app.Server) CategoryRepository {
+	return &CategoryRepositoryImpl{
 		Server: server,
 	}
 }
@@ -29,5 +29,9 @@ func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, category d
 }
 
 func (repository *CategoryRepositoryImpl) FindByID(ctx context.Context, categoryID uint) (category domain.Category, err error) {
-	return category, repository.Server.DB.WithContext(ctx).Preload("Products").First(&category, categoryID).Error
+	return category, repository.Server.DB.WithContext(ctx).First(&category, categoryID).Error
+}
+
+func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context) (categories []domain.Category, err error) {
+	return categories, repository.Server.DB.WithContext(ctx).Find(&categories).Error
 }

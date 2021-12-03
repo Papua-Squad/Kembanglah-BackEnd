@@ -81,7 +81,7 @@ func (controller *AuthControllerImpl) Register(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "success register",
+		Message: "success register new user",
 		Data:    registerResponse,
 	})
 }

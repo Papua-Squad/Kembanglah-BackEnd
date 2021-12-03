@@ -25,11 +25,11 @@ func NewRouter(server *app.Server) {
 	authController := controller.NewAuthController(authService)
 
 	productRepository := repository.NewProductRepository(server)
-	productService := service.NewProductService(&productRepository)
+	productService := service.NewProductService(productRepository)
 	productController := controller.NewProductController(productService)
 
 	categoryRepository := repository.NewCategoryRepository(server)
-	categoryService := service.NewCategoryService(&categoryRepository)
+	categoryService := service.NewCategoryService(categoryRepository)
 	categoryController := controller.NewCategoryController(categoryService)
 
 	server.Echo.GET("/", homeController.Home)
@@ -43,22 +43,25 @@ func NewRouter(server *app.Server) {
 		SigningKey: []byte(server.Config.JwtSecret),
 	}
 
-	// Create Restricted Group, which mean user must login before using an endpoint
+	// Create Restricted Group, which mean user must log in before using an endpoint
 	restricted := server.Echo.Group("/api")
 	restricted.Use(middleware.JWTWithConfig(jwtConfig))
 
-	// Endpoint untuk files
+	// Files Endpoint
 	restricted.GET("/files/*", homeController.Files)
 
-	restricted.POST("/product", productController.Create)
-	restricted.PUT("/product/:productID", productController.Update)
-	restricted.DELETE("/product/:productID", productController.Delete)
-	restricted.GET("/product/:productID", productController.FindByID)
-	restricted.GET("/product/findAll", productController.FindAll)
+	// Product Endpoint
+	productEndpoint := restricted.Group("/product")
+	productEndpoint.POST("/", productController.Create)
+	productEndpoint.PUT("/:productID", productController.Update)
+	productEndpoint.DELETE("/:productID", productController.Delete)
+	productEndpoint.GET("/:productID", productController.FindByID)
+	productEndpoint.GET("/", productController.FindAll)
 
-	//category
-	restricted.POST("/category", categoryController.Create)
-	restricted.PUT("/category/:categoryID", categoryController.Update)
-	restricted.DELETE("/category/:categoryID", categoryController.Delete)
-	restricted.GET("/category/:categoryID", categoryController.FindByID)
+	// Category Endpoint
+	categoryEndpoint := restricted.Group("/category")
+	categoryEndpoint.PUT("/:categoryID", categoryController.Update)
+	categoryEndpoint.DELETE("/:categoryID", categoryController.Delete)
+	categoryEndpoint.GET("/:categoryID", categoryController.FindByID)
+	categoryEndpoint.GET("/", categoryController.FindAll)
 }

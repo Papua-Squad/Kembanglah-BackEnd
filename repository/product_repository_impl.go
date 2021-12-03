@@ -10,8 +10,8 @@ type ProductRepositoryImpl struct {
 	Server *app.Server
 }
 
-func NewProductRepository(server *app.Server) ProductRepositoryImpl {
-	return ProductRepositoryImpl{
+func NewProductRepository(server *app.Server) ProductRepository {
+	return &ProductRepositoryImpl{
 		Server: server,
 	}
 }
@@ -29,7 +29,7 @@ func (repository *ProductRepositoryImpl) Delete(ctx context.Context, product dom
 }
 
 func (repository *ProductRepositoryImpl) FindByID(ctx context.Context, productID uint) (product domain.Product, err error) {
-	return product, repository.Server.DB.WithContext(ctx).Preload("Categories").First(&product, productID).Error
+	return product, repository.Server.DB.WithContext(ctx).First(&product, productID).Error
 }
 
 func (repository *ProductRepositoryImpl) FindBySeller(ctx context.Context, sellerID uint) (products []domain.Product, err error) {
@@ -37,9 +37,9 @@ func (repository *ProductRepositoryImpl) FindBySeller(ctx context.Context, selle
 }
 
 func (repository *ProductRepositoryImpl) FindByCategory(ctx context.Context, categoryID uint) (products []domain.Product, err error) {
-	return products, repository.Server.DB.WithContext(ctx).Preload("Products").Find(&products, "category_id = ?", categoryID).Error
+	return products, repository.Server.DB.WithContext(ctx).Find(&products, "category_id = ?", categoryID).Error
 }
 
 func (repository *ProductRepositoryImpl) FindAll(ctx context.Context) (products []domain.Product, err error) {
-	return products, repository.Server.DB.WithContext(ctx).Preload("Categories").Find(&products).Error
+	return products, repository.Server.DB.WithContext(ctx).Find(&products).Error
 }

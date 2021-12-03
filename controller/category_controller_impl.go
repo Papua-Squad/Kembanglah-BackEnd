@@ -39,7 +39,14 @@ func (controller *CategoryControllerImpl) Create(ctx echo.Context) error {
 		})
 	}
 
-	categoryResponse := controller.CategoryService.Create(ctx.Request().Context(), *category)
+	categoryResponse, err := controller.CategoryService.Create(ctx.Request().Context(), *category)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
@@ -56,18 +63,33 @@ func (controller *CategoryControllerImpl) Update(ctx echo.Context) error {
 	category.ID = uint(categoryID)
 
 	if err := ctx.Bind(category); err != nil {
-		return ctx.JSON(http.StatusBadRequest, err.Error())
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
 	}
 
 	if err := ctx.Validate(category); err != nil {
-		return ctx.JSON(http.StatusBadRequest, err.Error())
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
 	}
 
-	categoryResponse := controller.CategoryService.Update(ctx.Request().Context(), *category)
+	categoryResponse, err := controller.CategoryService.Update(ctx.Request().Context(), *category)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "succes update category",
+		Message: "Success update category",
 		Data:    categoryResponse,
 	})
 }
@@ -76,7 +98,13 @@ func (controller *CategoryControllerImpl) Delete(ctx echo.Context) error {
 	categoryID, err := strconv.Atoi(ctx.Param("categoryID"))
 	helper.PanicIfError(err)
 
-	controller.CategoryService.Delete(ctx.Request().Context(), uint(categoryID))
+	if err := controller.CategoryService.Delete(ctx.Request().Context(), uint(categoryID)); err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
 		Message: "OK",
@@ -87,6 +115,35 @@ func (controller *CategoryControllerImpl) FindByID(ctx echo.Context) error {
 	categoryID, err := strconv.Atoi(ctx.Param("categoryID"))
 	helper.PanicIfError(err)
 
-	customerResponse := controller.CategoryService.FindByID(ctx.Request().Context(), uint(categoryID))
-	return ctx.JSON(http.StatusOK, customerResponse)
+	categoryResponse, err := controller.CategoryService.FindByID(ctx.Request().Context(), uint(categoryID))
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
+
+	return ctx.JSON(http.StatusOK, web.Response{
+		Code:    http.StatusOK,
+		Message: "Get Category By ID success",
+		Data:    categoryResponse,
+	})
+}
+
+func (controller *CategoryControllerImpl) FindAll(ctx echo.Context) error {
+	categoryResponse, err := controller.CategoryService.FindAll(ctx.Request().Context())
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
+
+	return ctx.JSON(http.StatusOK, web.Response{
+		Code:    http.StatusOK,
+		Message: "Get all categories",
+		Data:    categoryResponse,
+	})
 }
