@@ -135,7 +135,7 @@ func (controller *ProductControllerImpl) FindByID(ctx echo.Context) error {
 }
 
 func (controller *ProductControllerImpl) FindBySeller(ctx echo.Context) error {
-	sellerID, _ := strconv.Atoi(ctx.Param("sellerID"))
+	sellerID, _ := strconv.Atoi(ctx.QueryParam("seller"))
 
 	productResponse, err := controller.ProductService.FindByID(ctx.Request().Context(), uint(sellerID))
 	if err != nil {
@@ -154,7 +154,7 @@ func (controller *ProductControllerImpl) FindBySeller(ctx echo.Context) error {
 }
 
 func (controller *ProductControllerImpl) FindByCategory(ctx echo.Context) error {
-	categoryID, _ := strconv.Atoi(ctx.Param("categoryID"))
+	categoryID, _ := strconv.Atoi(ctx.QueryParam("category"))
 
 	productResponse, err := controller.ProductService.FindByID(ctx.Request().Context(), uint(categoryID))
 	if err != nil {
