@@ -23,15 +23,7 @@ func NewCategoryController(categoryService service.CategoryService) CategoryCont
 func (controller *CategoryControllerImpl) Create(ctx echo.Context) error {
 
 	category := new(web.CategoryRequest)
-	if err := ctx.Bind(category); err != nil {
-		return ctx.JSON(http.StatusBadRequest, web.Response{
-			Code:    http.StatusBadRequest,
-			Message: err.Error(),
-			Data:    nil,
-		})
-	}
-
-	if err := ctx.Validate(category); err != nil {
+	if err := helper.BindAndValidate(ctx, category); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,
 			Message: err.Error(),
@@ -62,15 +54,7 @@ func (controller *CategoryControllerImpl) Update(ctx echo.Context) error {
 	helper.PanicIfError(err)
 	category.ID = uint(categoryID)
 
-	if err := ctx.Bind(category); err != nil {
-		return ctx.JSON(http.StatusBadRequest, web.Response{
-			Code:    http.StatusBadRequest,
-			Message: err.Error(),
-			Data:    nil,
-		})
-	}
-
-	if err := ctx.Validate(category); err != nil {
+	if err := helper.BindAndValidate(ctx, category); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,
 			Message: err.Error(),

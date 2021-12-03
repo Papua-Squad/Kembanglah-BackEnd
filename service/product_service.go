@@ -6,11 +6,11 @@ import (
 )
 
 type ProductService interface {
-	Create(ctx context.Context, request web.ProductRequest) web.ProductResponse
-	Update(ctx context.Context, request web.ProductUpdateRequest) web.ProductResponse
-	Delete(ctx context.Context, productID uint)
-	FindByID(ctx context.Context, productID uint) web.ProductResponse
-	FindBySeller(ctx context.Context, sellerID uint) web.ProductResponse
-	FindByCategory(ctx context.Context, categoryID uint) web.ProductResponse
-	FindAll(ctx context.Context) []web.ProductResponse
+	Create(ctx context.Context, request web.ProductRequest) (response web.ProductResponse, err error)
+	Update(ctx context.Context, request web.ProductUpdateRequest) (response web.ProductResponse, err error)
+	Delete(ctx context.Context, productID uint) error
+	FindByID(ctx context.Context, productID uint) (response web.ProductResponse, err error)
+	FindBySeller(ctx context.Context, sellerID uint) (responses []web.ProductResponse, err error)
+	FindByCategory(ctx context.Context, categoryID uint) (responses []web.ProductResponse, err error)
+	FindAll(ctx context.Context) (responses []web.ProductResponse, err error)
 }

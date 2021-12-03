@@ -50,18 +50,21 @@ func NewRouter(server *app.Server) {
 	// Files Endpoint
 	restricted.GET("/files/*", homeController.Files)
 
-	// Product Endpoint
-	productEndpoint := restricted.Group("/product")
-	productEndpoint.POST("/", productController.Create)
-	productEndpoint.PUT("/:productID", productController.Update)
-	productEndpoint.DELETE("/:productID", productController.Delete)
-	productEndpoint.GET("/:productID", productController.FindByID)
-	productEndpoint.GET("/", productController.FindAll)
-
 	// Category Endpoint
 	categoryEndpoint := restricted.Group("/category")
 	categoryEndpoint.PUT("/:categoryID", categoryController.Update)
 	categoryEndpoint.DELETE("/:categoryID", categoryController.Delete)
 	categoryEndpoint.GET("/:categoryID", categoryController.FindByID)
 	categoryEndpoint.GET("/", categoryController.FindAll)
+
+	// Product Endpoint
+	productEndpoint := restricted.Group("/product")
+	productEndpoint.POST("/", productController.Create)
+	productEndpoint.PUT("/:productID", productController.Update)
+	productEndpoint.DELETE("/:productID", productController.Delete)
+	productEndpoint.GET("/:productID", productController.FindByID)
+	productEndpoint.PUT("/:sellerID", productController.FindBySeller)
+	productEndpoint.DELETE("/:categoryID", productController.FindByCategory)
+	productEndpoint.GET("/", productController.FindAll)
+
 }

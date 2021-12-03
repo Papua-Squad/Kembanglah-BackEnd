@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"kembanglah/helper"
 	"kembanglah/model/web"
 	"kembanglah/service"
 	"net/http"
@@ -20,15 +21,7 @@ func NewAuthController(authService service.AuthService) AuthController {
 
 func (controller *AuthControllerImpl) Login(ctx echo.Context) error {
 	user := new(web.LoginRequest)
-	if err := ctx.Bind(user); err != nil {
-		return ctx.JSON(http.StatusBadRequest, web.Response{
-			Code:    http.StatusBadRequest,
-			Message: err.Error(),
-			Data:    nil,
-		})
-	}
-
-	if err := ctx.Validate(user); err != nil {
+	if err := helper.BindAndValidate(ctx, user); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,
 			Message: err.Error(),
@@ -54,15 +47,7 @@ func (controller *AuthControllerImpl) Login(ctx echo.Context) error {
 
 func (controller *AuthControllerImpl) Register(ctx echo.Context) error {
 	user := new(web.RegisterRequest)
-	if err := ctx.Bind(user); err != nil {
-		return ctx.JSON(http.StatusBadRequest, web.Response{
-			Code:    http.StatusBadRequest,
-			Message: err.Error(),
-			Data:    nil,
-		})
-	}
-
-	if err := ctx.Validate(user); err != nil {
+	if err := helper.BindAndValidate(ctx, user); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,
 			Message: err.Error(),

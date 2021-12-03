@@ -72,19 +72,19 @@ func (service *CategoryServiceImpl) FindByID(ctx context.Context, categoryID uin
 		Type: categoryResponse.Type,
 	}, nil
 }
-func (service *CategoryServiceImpl) FindAll(ctx context.Context) (categories []web.CategoryResponse, err error) {
+func (service *CategoryServiceImpl) FindAll(ctx context.Context) (responses []web.CategoryResponse, err error) {
 	categoryResponse, err := service.CategoryRepository.FindAll(ctx)
 	if err != nil {
-		return categories, err
+		return responses, err
 	}
 
 	for _, category := range categoryResponse {
-		categories = append(categories, web.CategoryResponse{
+		responses = append(responses, web.CategoryResponse{
 			ID:   category.ID,
 			Name: category.Name,
 			Type: category.Type,
 		})
 	}
 
-	return categories, nil
+	return responses, nil
 }

@@ -2,12 +2,10 @@ package service
 
 import (
 	"context"
-	"kembanglah/helper"
+	"gorm.io/gorm"
 	"kembanglah/model/domain"
 	"kembanglah/model/web"
 	"kembanglah/repository"
-
-	"gorm.io/gorm"
 )
 
 type ProductServiceImpl struct {
@@ -18,35 +16,44 @@ func NewProductService(productRepository repository.ProductRepository) ProductSe
 	return &ProductServiceImpl{ProductRepository: productRepository}
 }
 
-func (service *ProductServiceImpl) Create(ctx context.Context, request web.ProductRequest) web.ProductResponse {
+func (service *ProductServiceImpl) Create(ctx context.Context, request web.ProductRequest) (response web.ProductResponse, err error) {
 	productRequest := domain.Product{
 		Name:        request.Name,
 		Price:       request.Price,
 		Stock:       request.Stock,
 		Weight:      request.Weight,
 		Description: request.Description,
-		ImageUrl:    request.ImageUrl,
+		ImageUrl:    "",
+		CategoryID:  request.CategoryID,
+		SellerID:    request.SellerID,
 	}
 
 	productResponse, err := service.ProductRepository.Create(ctx, productRequest)
-	helper.PanicIfError(err)
+	if err != nil {
+		return response, err
+	}
 
 	return web.ProductResponse{
 		ID:          productResponse.ID,
 		Name:        productResponse.Name,
+		Price:       productResponse.Price,
 		Stock:       productResponse.Stock,
 		Weight:      productResponse.Stock,
 		Description: productResponse.Description,
+		CategoryID:  productResponse.CategoryID,
+		SellerID:    productResponse.SellerID,
 		ImageUrl:    productResponse.ImageUrl,
-	}
+	}, nil
 }
 
-func (service *ProductServiceImpl) Update(ctx context.Context, request web.ProductUpdateRequest) web.ProductResponse {
+func (service *ProductServiceImpl) Update(ctx context.Context, request web.ProductUpdateRequest) (response web.ProductResponse, err error) {
 	var product domain.Product
 	product.ID = request.ID
 
-	_, err := service.ProductRepository.FindByID(ctx, product.ID)
-	helper.PanicIfError(err)
+	_, err = service.ProductRepository.FindByID(ctx, product.ID)
+	if err != nil {
+		return response, err
+	}
 
 	productResponse, err := service.ProductRepository.Update(ctx, domain.Product{
 		Model: gorm.Model{
@@ -57,74 +64,115 @@ func (service *ProductServiceImpl) Update(ctx context.Context, request web.Produ
 		Stock:       request.Stock,
 		Weight:      request.Weight,
 		Description: request.Description,
-		ImageUrl:    request.ImageUrl,
+		ImageUrl:    "",
+		CategoryID:  request.CategoryID,
+		SellerID:    request.SellerID,
 	})
-
-	helper.PanicIfError(err)
+	if err != nil {
+		return response, err
+	}
 
 	return web.ProductResponse{
 		ID:          productResponse.ID,
 		Name:        productResponse.Name,
+		Price:       productResponse.Price,
 		Stock:       productResponse.Stock,
 		Weight:      productResponse.Stock,
 		Description: productResponse.Description,
+		CategoryID:  productResponse.CategoryID,
+		SellerID:    productResponse.SellerID,
 		ImageUrl:    productResponse.ImageUrl,
-	}
+	}, nil
 }
 
-func (service *ProductServiceImpl) Delete(ctx context.Context, productID uint) {
+func (service *ProductServiceImpl) Delete(ctx context.Context, productID uint) error {
 	var product domain.Product
 	product.ID = productID
 
-	err := service.ProductRepository.Delete(ctx, product)
-	helper.PanicIfError(err)
+	return service.ProductRepository.Delete(ctx, product)
 }
 
-func (service *ProductServiceImpl) FindByID(ctx context.Context, productID uint) web.ProductResponse {
+func (service *ProductServiceImpl) FindByID(ctx context.Context, productID uint) (response web.ProductResponse, err error) {
 	productResponse, err := service.ProductRepository.FindByID(ctx, productID)
-	helper.PanicIfError(err)
+	if err != nil {
+		return response, err
+	}
 
 	return web.ProductResponse{
 		ID:          productResponse.ID,
 		Name:        productResponse.Name,
+		Price:       productResponse.Price,
 		Stock:       productResponse.Stock,
-		Weight:      productResponse.Stock,
+		Weight:      productResponse.Weight,
 		Description: productResponse.Description,
-		ImageUrl:    productResponse.ImageUrl,
-		Categories:  productResponse.Categories,
+		CategoryID:  productResponse.CategoryID,
+		SellerID:    productResponse.SellerID,
+		ImageUrl:    "",
+	}, nil
+}
+
+func (service *ProductServiceImpl) FindBySeller(ctx context.Context, sellerID uint) (responses []web.ProductResponse, err error) {
+	productResponse, err := service.ProductRepository.FindBySeller(ctx, sellerID)
+	if err != nil {
+		return responses, err
 	}
-}
 
-func (service *ProductServiceImpl) FindBySeller(ctx context.Context, sellerID uint) web.ProductResponse {
-	panic("implement me")
-
-}
-
-func (service *ProductServiceImpl) FindByCategory(ctx context.Context, categoryID uint) web.ProductResponse {
-	panic("impl me")
-	// productResponse, err := service.ProductRepository.FindByCategory(ctx, categoryID)
-	// helper.PanicIfError(err)
-
-	// return web.ProductResponse{}
-}
-
-func (service *ProductServiceImpl) FindAll(ctx context.Context) []web.ProductResponse {
-	var newProduct []web.ProductResponse
-
-	product, err := service.ProductRepository.FindAll(ctx)
-	helper.PanicIfError(err)
-
-	for _, productResponse := range product {
-		newProduct = append(newProduct, web.ProductResponse{
-			ID:          productResponse.ID,
-			Name:        productResponse.Name,
-			Stock:       productResponse.Stock,
-			Weight:      productResponse.Stock,
-			Description: productResponse.Description,
-			ImageUrl:    productResponse.ImageUrl,
-			Categories:  productResponse.Categories,
+	for _, product := range productResponse {
+		responses = append(responses, web.ProductResponse{
+			ID:          product.ID,
+			Name:        product.Name,
+			Price:       product.Price,
+			Stock:       product.Stock,
+			Weight:      product.Stock,
+			Description: product.Description,
+			CategoryID:  product.CategoryID,
+			SellerID:    product.SellerID,
+			ImageUrl:    product.ImageUrl,
 		})
 	}
-	return newProduct
+	return responses, nil
+}
 
+func (service *ProductServiceImpl) FindByCategory(ctx context.Context, categoryID uint) (responses []web.ProductResponse, err error) {
+	productResponse, err := service.ProductRepository.FindBySeller(ctx, categoryID)
+	if err != nil {
+		return responses, err
+	}
+
+	for _, product := range productResponse {
+		responses = append(responses, web.ProductResponse{
+			ID:          product.ID,
+			Name:        product.Name,
+			Price:       product.Price,
+			Stock:       product.Stock,
+			Weight:      product.Stock,
+			Description: product.Description,
+			CategoryID:  product.CategoryID,
+			SellerID:    product.SellerID,
+			ImageUrl:    product.ImageUrl,
+		})
+	}
+	return responses, nil
+}
+
+func (service *ProductServiceImpl) FindAll(ctx context.Context) (responses []web.ProductResponse, err error) {
+	productResponse, err := service.ProductRepository.FindAll(ctx)
+	if err != nil {
+		return responses, err
+	}
+
+	for _, product := range productResponse {
+		responses = append(responses, web.ProductResponse{
+			ID:          product.ID,
+			Name:        product.Name,
+			Price:       product.Price,
+			Stock:       product.Stock,
+			Weight:      product.Stock,
+			Description: product.Description,
+			CategoryID:  product.CategoryID,
+			SellerID:    product.SellerID,
+			ImageUrl:    product.ImageUrl,
+		})
+	}
+	return responses, nil
 }
