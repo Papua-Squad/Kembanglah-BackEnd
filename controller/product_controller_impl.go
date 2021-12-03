@@ -135,9 +135,9 @@ func (controller *ProductControllerImpl) FindByID(ctx echo.Context) error {
 }
 
 func (controller *ProductControllerImpl) FindBySeller(ctx echo.Context) error {
-	sellerID, _ := strconv.Atoi(ctx.QueryParam("seller"))
+	sellerID, _ := strconv.Atoi(ctx.Param("sellerID"))
 
-	productResponse, err := controller.ProductService.FindByID(ctx.Request().Context(), uint(sellerID))
+	productResponse, err := controller.ProductService.FindBySeller(ctx.Request().Context(), uint(sellerID))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,
@@ -148,15 +148,15 @@ func (controller *ProductControllerImpl) FindBySeller(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get Product By SellerID Success",
+		Message: "Get Product By Seller ID Success",
 		Data:    productResponse,
 	})
 }
 
 func (controller *ProductControllerImpl) FindByCategory(ctx echo.Context) error {
-	categoryID, _ := strconv.Atoi(ctx.QueryParam("category"))
+	categoryID, _ := strconv.Atoi(ctx.Param("categoryID"))
 
-	productResponse, err := controller.ProductService.FindByID(ctx.Request().Context(), uint(categoryID))
+	productResponse, err := controller.ProductService.FindByCategory(ctx.Request().Context(), uint(categoryID))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,
@@ -167,7 +167,7 @@ func (controller *ProductControllerImpl) FindByCategory(ctx echo.Context) error 
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get Category By ID Success",
+		Message: "Get Product By Category ID Success",
 		Data:    productResponse,
 	})
 }

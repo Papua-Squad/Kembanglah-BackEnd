@@ -113,8 +113,9 @@ func (service *ProductServiceImpl) FindByID(ctx context.Context, productID uint)
 
 func (service *ProductServiceImpl) FindBySeller(ctx context.Context, sellerID uint) (responses []web.ProductResponse, err error) {
 	productResponse, err := service.ProductRepository.FindBySeller(ctx, sellerID)
-	if err != nil {
-		return responses, err
+
+	if err != nil || len(productResponse) == 0 {
+		return nil, gorm.ErrRecordNotFound
 	}
 
 	for _, product := range productResponse {
@@ -134,9 +135,9 @@ func (service *ProductServiceImpl) FindBySeller(ctx context.Context, sellerID ui
 }
 
 func (service *ProductServiceImpl) FindByCategory(ctx context.Context, categoryID uint) (responses []web.ProductResponse, err error) {
-	productResponse, err := service.ProductRepository.FindBySeller(ctx, categoryID)
-	if err != nil {
-		return responses, err
+	productResponse, err := service.ProductRepository.FindByCategory(ctx, categoryID)
+	if err != nil || len(productResponse) == 0 {
+		return nil, gorm.ErrRecordNotFound
 	}
 
 	for _, product := range productResponse {
