@@ -42,7 +42,7 @@ func (controller *CategoryControllerImpl) Create(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "success create category",
+		Message: "Success Create Category",
 		Data:    categoryResponse,
 	})
 }
@@ -73,7 +73,7 @@ func (controller *CategoryControllerImpl) Update(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Success update category",
+		Message: "Success Update Category",
 		Data:    categoryResponse,
 	})
 }
@@ -110,7 +110,7 @@ func (controller *CategoryControllerImpl) FindByID(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get Category By ID success",
+		Message: "Get Category By ID Success",
 		Data:    categoryResponse,
 	})
 }
@@ -127,7 +127,7 @@ func (controller *CategoryControllerImpl) FindAll(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get all categories",
+		Message: "Get all Categories Success",
 		Data:    categoryResponse,
 	})
 }

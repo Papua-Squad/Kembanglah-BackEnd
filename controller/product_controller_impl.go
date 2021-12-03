@@ -42,7 +42,7 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "success create product",
+		Message: "Success Create Product",
 		Data:    productResponse,
 	})
 }
@@ -73,7 +73,7 @@ func (controller *ProductControllerImpl) Update(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "success update product",
+		Message: "Success Update Product",
 		Data:    productResponse,
 	})
 }
@@ -111,7 +111,7 @@ func (controller *ProductControllerImpl) FindByID(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get Product By ID success",
+		Message: "Get Product By ID Success",
 		Data:    productResponse,
 	})
 }
@@ -131,7 +131,7 @@ func (controller *ProductControllerImpl) FindBySeller(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get Product By SellerID success",
+		Message: "Get Product By SellerID Success",
 		Data:    productResponse,
 	})
 }
@@ -151,7 +151,7 @@ func (controller *ProductControllerImpl) FindByCategory(ctx echo.Context) error 
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get Category By ID success",
+		Message: "Get Category By ID Success",
 		Data:    productResponse,
 	})
 }
@@ -167,7 +167,7 @@ func (controller *ProductControllerImpl) FindAll(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get Category By ID success",
+		Message: "Get All Products Success",
 		Data:    productResponse,
 	})
 }

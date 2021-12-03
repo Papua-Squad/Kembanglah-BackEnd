@@ -40,7 +40,7 @@ func (controller *AuthControllerImpl) Login(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "success login",
+		Message: "Success Login",
 		Data:    loginResponse,
 	})
 }
@@ -66,7 +66,7 @@ func (controller *AuthControllerImpl) Register(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "success register new user",
+		Message: "Success Register New User",
 		Data:    registerResponse,
 	})
 }
