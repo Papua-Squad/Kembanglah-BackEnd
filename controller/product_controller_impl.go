@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/labstack/gommon/random"
 	"kembanglah/helper"
 	"kembanglah/model/web"
 	"kembanglah/service"
@@ -21,8 +22,28 @@ func NewProductController(productService service.ProductService) ProductControll
 }
 
 func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
+	file, err := ctx.FormFile("image")
+
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
+
+	pathFile, err := helper.SaveFile("product_"+random.Alphabetic, file)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, web.Response{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+			Data:    nil,
+		})
+	}
 
 	product := new(web.ProductRequest)
+	product.ImageUrl = pathFile
+
 	if err := helper.BindAndValidate(ctx, product); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,

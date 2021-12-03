@@ -8,6 +8,7 @@ type ProductRequest struct {
 	Description string `json:"description" form:"description" validate:"required"`
 	CategoryID  uint   `json:"category_id" form:"category_id" validate:"required"`
 	SellerID    uint   `json:"seller_id" form:"seller_id" validate:"required"`
+	ImageUrl    string `json:"image_url"`
 }
 
 type ProductResponse struct {

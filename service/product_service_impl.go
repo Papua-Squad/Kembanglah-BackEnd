@@ -23,7 +23,7 @@ func (service *ProductServiceImpl) Create(ctx context.Context, request web.Produ
 		Stock:       request.Stock,
 		Weight:      request.Weight,
 		Description: request.Description,
-		ImageUrl:    "",
+		ImageUrl:    request.ImageUrl,
 		CategoryID:  request.CategoryID,
 		SellerID:    request.SellerID,
 	}
@@ -107,7 +107,7 @@ func (service *ProductServiceImpl) FindByID(ctx context.Context, productID uint)
 		Description: productResponse.Description,
 		CategoryID:  productResponse.CategoryID,
 		SellerID:    productResponse.SellerID,
-		ImageUrl:    "",
+		ImageUrl:    productResponse.ImageUrl,
 	}, nil
 }
 
