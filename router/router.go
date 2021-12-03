@@ -52,6 +52,7 @@ func NewRouter(server *app.Server) {
 
 	// Category Endpoint
 	categoryEndpoint := restricted.Group("/category")
+	categoryEndpoint.POST("/", categoryController.Create)
 	categoryEndpoint.PUT("/:categoryID", categoryController.Update)
 	categoryEndpoint.DELETE("/:categoryID", categoryController.Delete)
 	categoryEndpoint.GET("/:categoryID", categoryController.FindByID)
