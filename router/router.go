@@ -4,9 +4,9 @@ import (
 	"kembanglah/app"
 	"kembanglah/controller"
 	"kembanglah/helper"
-	"kembanglah/model/domain"
 	"kembanglah/repository"
 	"kembanglah/service"
+	"os"
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4/middleware"
@@ -38,14 +38,12 @@ func NewRouter(server *app.Server) {
 	server.Echo.POST("/register", authController.Register)
 	server.Echo.POST("/login", authController.Login)
 
-	jwtConfig := middleware.JWTConfig{
-		Claims:     &domain.JwtCustomClaims{},
-		SigningKey: []byte(server.Config.JwtSecret),
-	}
-
 	// Create Restricted Group, which mean user must log in before using an endpoint
 	restricted := server.Echo.Group("/api")
-	restricted.Use(middleware.JWTWithConfig(jwtConfig))
+	restricted.Use(middleware.JWTWithConfig(middleware.JWTConfig{
+		Claims:     &helper.JwtCustomClaims{},
+		SigningKey: []byte(os.Getenv("JWT_SECRET")),
+	}))
 
 	// Files Endpoint
 	restricted.GET("/files/*", homeController.Files)
