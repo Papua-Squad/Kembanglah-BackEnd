@@ -77,7 +77,7 @@ func (service *ProductServiceImpl) Update(ctx context.Context, request web.Produ
 		Name:        productResponse.Name,
 		Price:       productResponse.Price,
 		Stock:       productResponse.Stock,
-		Weight:      productResponse.Stock,
+		Weight:      productResponse.Weight,
 		Description: productResponse.Description,
 		CategoryID:  productResponse.CategoryID,
 		SellerID:    productResponse.SellerID,
