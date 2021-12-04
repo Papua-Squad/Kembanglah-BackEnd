@@ -34,8 +34,8 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 	}
 
 	user := ctx.Get("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	seller, _ := strconv.Atoi(claims["id"].(string))
+	claims := user.Claims.(*helper.JwtCustomClaims)
+	seller := claims.Id
 
 	pathFile, err := helper.SaveFile("product_"+random.String(8, random.Alphabetic), file)
 	if err != nil {
@@ -48,7 +48,7 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 
 	product := new(web.ProductRequest)
 	product.ImageUrl = pathFile
-	product.SellerID = uint(seller)
+	product.SellerID = seller
 
 	if err := helper.BindAndValidate(ctx, product); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
