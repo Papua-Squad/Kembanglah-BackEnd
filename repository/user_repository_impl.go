@@ -18,10 +18,6 @@ func (repository *UserRepositoryImpl) Create(ctx context.Context, user domain.Us
 	return user, repository.server.DB.WithContext(ctx).Create(&user).Error
 }
 
-func (repository *UserRepositoryImpl) Detail(ctx context.Context, username, password string) (user domain.User, err error) {
-	return user, repository.server.DB.WithContext(ctx).Find(&user, "username = ? AND password = ?", username, password).Error
-}
-
 func (repository *UserRepositoryImpl) Update(ctx context.Context, user domain.User) (domain.User, error) {
 	return user, repository.server.DB.WithContext(ctx).Model(&user).Updates(&user).Error
 }

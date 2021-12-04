@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/gommon/random"
 	"kembanglah/helper"
@@ -36,6 +37,7 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 	user := ctx.Get("user").(*jwt.Token)
 	claims := user.Claims.(*helper.JwtCustomClaims)
 	seller := claims.Id
+	fmt.Println(claims)
 
 	pathFile, err := helper.SaveFile("product_"+random.String(8, random.Alphabetic), file)
 	if err != nil {

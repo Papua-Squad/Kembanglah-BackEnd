@@ -17,24 +17,19 @@ func NewAuthService(userRepository repository.UserRepository) AuthService {
 }
 
 func (service *AuthServiceImpl) Login(ctx context.Context, request web.LoginRequest) (response web.LoginResponse, err error) {
-	password, err := helper.HashPassword(request.Password)
+	userResponse, err := service.UserRepository.FindByUsername(ctx, request.Username)
 	if err != nil {
 		return response, err
 	}
 
-	userDetails, err := service.UserRepository.Detail(ctx, request.Username, string(password))
-	if err != nil {
-		return response, err
-	}
-	token, err := helper.GenerateToken(userDetails)
-	if err != nil {
+	if err := helper.CheckPasswordHash(request.Password, userResponse.Password); err != nil {
 		return response, err
 	}
 
+	token := helper.GenerateToken(userResponse)
 	return web.LoginResponse{
 		AuthToken: token,
 	}, err
-
 }
 
 func (service *AuthServiceImpl) Register(ctx context.Context, request web.RegisterRequest) (response web.RegisterResponse, err error) {

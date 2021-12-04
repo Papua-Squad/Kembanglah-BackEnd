@@ -15,7 +15,7 @@ type JwtCustomClaims struct {
 	jwt.StandardClaims
 }
 
-func GenerateToken(user domain.User) (string, error) {
+func GenerateToken(user domain.User) string {
 	claims := JwtCustomClaims{
 		Id:       user.ID,
 		Username: user.Username,
@@ -26,7 +26,6 @@ func GenerateToken(user domain.User) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	t, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
-
-	return t, err
+	t, _ := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	return t
 }
