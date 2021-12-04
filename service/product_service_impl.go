@@ -17,6 +17,7 @@ func NewProductService(productRepository repository.ProductRepository) ProductSe
 }
 
 func (service *ProductServiceImpl) Create(ctx context.Context, request web.ProductRequest) (response web.ProductResponse, err error) {
+
 	productRequest := domain.Product{
 		Name:        request.Name,
 		Price:       request.Price,
@@ -38,7 +39,7 @@ func (service *ProductServiceImpl) Create(ctx context.Context, request web.Produ
 		Name:        productResponse.Name,
 		Price:       productResponse.Price,
 		Stock:       productResponse.Stock,
-		Weight:      productResponse.Stock,
+		Weight:      productResponse.Weight,
 		Description: productResponse.Description,
 		CategoryID:  productResponse.CategoryID,
 		SellerID:    productResponse.SellerID,
@@ -66,7 +67,6 @@ func (service *ProductServiceImpl) Update(ctx context.Context, request web.Produ
 		Description: request.Description,
 		ImageUrl:    "",
 		CategoryID:  request.CategoryID,
-		SellerID:    request.SellerID,
 	})
 	if err != nil {
 		return response, err
@@ -124,7 +124,7 @@ func (service *ProductServiceImpl) FindBySeller(ctx context.Context, sellerID ui
 			Name:        product.Name,
 			Price:       product.Price,
 			Stock:       product.Stock,
-			Weight:      product.Stock,
+			Weight:      product.Weight,
 			Description: product.Description,
 			CategoryID:  product.CategoryID,
 			SellerID:    product.SellerID,
@@ -146,7 +146,7 @@ func (service *ProductServiceImpl) FindByCategory(ctx context.Context, categoryI
 			Name:        product.Name,
 			Price:       product.Price,
 			Stock:       product.Stock,
-			Weight:      product.Stock,
+			Weight:      product.Weight,
 			Description: product.Description,
 			CategoryID:  product.CategoryID,
 			SellerID:    product.SellerID,
@@ -168,7 +168,7 @@ func (service *ProductServiceImpl) FindAll(ctx context.Context) (responses []web
 			Name:        product.Name,
 			Price:       product.Price,
 			Stock:       product.Stock,
-			Weight:      product.Stock,
+			Weight:      product.Weight,
 			Description: product.Description,
 			CategoryID:  product.CategoryID,
 			SellerID:    product.SellerID,

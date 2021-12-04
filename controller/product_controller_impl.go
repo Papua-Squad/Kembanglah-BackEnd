@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/gommon/random"
 	"kembanglah/helper"
 	"kembanglah/model/web"
@@ -32,7 +33,11 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 		})
 	}
 
-	pathFile, err := helper.SaveFile("product_"+random.Alphabetic, file)
+	user := ctx.Get("user").(*jwt.Token)
+	claims := user.Claims.(*helper.JwtCustomClaims)
+	seller := claims.Id
+
+	pathFile, err := helper.SaveFile("product_"+random.String(8, random.Alphabetic), file)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,
@@ -43,6 +48,7 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 
 	product := new(web.ProductRequest)
 	product.ImageUrl = pathFile
+	product.SellerID = seller
 
 	if err := helper.BindAndValidate(ctx, product); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
