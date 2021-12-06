@@ -32,6 +32,10 @@ func NewRouter(server *app.Server) {
 	categoryService := service.NewCategoryService(categoryRepository)
 	categoryController := controller.NewCategoryController(categoryService)
 
+	userRepository := repository.NewUserRepository(server)
+	userService := service.NewUserService(userRepository)
+	userController := controller.NewUserController(userService)
+
 	server.Echo.GET("/", homeController.Home)
 
 	// Authentication
@@ -66,4 +70,11 @@ func NewRouter(server *app.Server) {
 	productEndpoint.GET("/category/:categoryID", productController.FindByCategory)
 	productEndpoint.GET("/", productController.FindAll)
 
+	//User Endpoint
+	userEndpoint := restricted.Group("/user")
+	userEndpoint.PUT("/:userID", userController.Update)
+	userEndpoint.DELETE("/:userID", userController.Delete)
+	userEndpoint.GET("/:userID", userController.FindByID)
+	userEndpoint.GET("/:username", userController.FindByUsername)
+	userEndpoint.GET("/", userController.FindAll)
 }

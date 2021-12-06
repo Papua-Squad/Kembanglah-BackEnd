@@ -45,28 +45,31 @@ func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpda
 		Username: user.Username,
 		Email:    user.Email,
 		Password: user.Password,
+		ImageUrl: user.ImageUrl,
 	}
 }
 
-func (service *UserServiceImpl) Delete(ctx context.Context, userId uint) {
+func (service *UserServiceImpl) Delete(ctx context.Context, userID uint) {
 	var user domain.User
-	user.ID = userId
+	user.ID = userID
 
 	err := service.UserRepository.Delete(ctx, user)
 	helper.PanicIfError(err)
 }
 
-func (service *UserServiceImpl) FindByID(ctx context.Context, userId uint) web.User {
-	user, err := service.UserRepository.FindByID(ctx, userId)
-	helper.PanicIfError(err)
+func (service *UserServiceImpl) FindByID(ctx context.Context, userID uint) (response web.User, err error) {
+	userResponse, err := service.UserRepository.FindByID(ctx, userID)
+	if err != nil {
+		return response, err
+	}
 
 	return web.User{
-		ID:       user.ID,
-		FullName: user.FullName,
-		Username: user.Username,
-		Email:    user.Email,
-		Password: user.Password,
-	}
+		ID:       userResponse.ID,
+		FullName: userResponse.FullName,
+		Username: userResponse.Username,
+		Email:    userResponse.Email,
+		Password: userResponse.Password,
+	}, nil
 }
 
 func (service *UserServiceImpl) FindByUsername(ctx context.Context, username string) web.User {

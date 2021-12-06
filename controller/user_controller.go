@@ -2,9 +2,7 @@ package controller
 
 import "github.com/labstack/echo/v4"
 
-type SellerController interface {
-	Login(ctx echo.Context) error
-	Register(ctx echo.Context) error
+type UserController interface {
 	Update(ctx echo.Context) error
 	Delete(ctx echo.Context) error
 	FindByID(ctx echo.Context) error

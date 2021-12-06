@@ -26,12 +26,12 @@ func (repository *UserRepositoryImpl) Delete(ctx context.Context, user domain.Us
 	return repository.server.DB.WithContext(ctx).Delete(&user).Error
 }
 
-func (repository *UserRepositoryImpl) FindByID(ctx context.Context, userId uint) (user domain.User, err error) {
-	return user, repository.server.DB.WithContext(ctx).First(&user, userId).Error
+func (repository *UserRepositoryImpl) FindByID(ctx context.Context, userID uint) (user domain.User, err error) {
+	return user, repository.server.DB.WithContext(ctx).First(&user, userID).Error
 }
 
 func (repository *UserRepositoryImpl) FindByUsername(ctx context.Context, username string) (user domain.User, err error) {
-	return user, repository.server.DB.WithContext(ctx).First(&user, "username = ?", username).Error
+	return user, repository.server.DB.WithContext(ctx).Where("username = ?", username).Find(&user).Error
 }
 
 func (repository *UserRepositoryImpl) FindAll(ctx context.Context) (users []domain.User, err error) {

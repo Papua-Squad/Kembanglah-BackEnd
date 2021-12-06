@@ -12,8 +12,8 @@ type User struct {
 
 type UserUpdateRequest struct {
 	ID       uint   `json:"id"`
-	FullName string `json:"full_name" validate:"required"`
-	Email    string `json:"email" validate:"required,email"`
-	Username string `json:"username" validate:"required"`
-	Password string `json:"password" validate:"required,min=6"`
+	FullName string `json:"full_name" form:"full_name" validate:"required"`
+	Email    string `json:"email" form:"email" validate:"required,email"`
+	Username string `json:"username" form:"username" validate:"required"`
+	Password string `json:"password" form:"password" validate:"required,min=6"`
 }
