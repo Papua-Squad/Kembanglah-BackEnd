@@ -39,7 +39,7 @@ func (controller *UserControllerImpl) Update(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Succes Update User",
+		Message: "Succes Update UserResponse",
 		Data:    userResponse,
 	})
 }
@@ -69,7 +69,7 @@ func (controller *UserControllerImpl) FindByID(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get User By ID Success",
+		Message: "Get UserResponse By ID Success",
 		Data:    userResponse,
 	})
 }
@@ -80,7 +80,7 @@ func (controller *UserControllerImpl) FindByUsername(ctx echo.Context) error {
 	userResponse := controller.UserService.FindByUsername(ctx.Request().Context(), string(username))
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get User By Username Success",
+		Message: "Get UserResponse By Username Success",
 		Data:    userResponse,
 	})
 }
@@ -89,7 +89,7 @@ func (controller *UserControllerImpl) FindAll(ctx echo.Context) error {
 	userResponse := controller.UserService.FindAll(ctx.Request().Context())
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "Get All User Success",
+		Message: "Get All UserResponse Success",
 		Data:    userResponse,
 	})
 }

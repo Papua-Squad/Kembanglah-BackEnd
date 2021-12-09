@@ -1,13 +1,11 @@
 package service
 
 import (
-	"kembanglah/helper"
+	"context"
+	"gorm.io/gorm"
 	"kembanglah/model/domain"
 	"kembanglah/model/web"
 	"kembanglah/repository"
-
-	"golang.org/x/net/context"
-	"gorm.io/gorm"
 )
 
 type UserServiceImpl struct {
@@ -20,86 +18,149 @@ func NewUserService(userRepository repository.UserRepository) UserService {
 	}
 }
 
-func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpdateRequest) web.User {
-	var usr domain.User
-	usr.ID = request.ID
+func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpdateRequest) (response web.UserResponse, err error) {
+	var user domain.User
+	user.ID = request.ID
 
-	_, err := service.UserRepository.FindByID(ctx, usr.ID)
-	helper.PanicIfError(err)
+	_, err = service.UserRepository.FindByID(ctx, user.ID)
+	if err != nil {
+		return response, err
+	}
 
-	user, err := service.UserRepository.Update(ctx, domain.User{
+	userResponse, err := service.UserRepository.Update(ctx, domain.User{
 		Model: gorm.Model{
-			ID: request.ID,
+			ID: user.ID,
 		},
 		FullName: request.FullName,
-		Username: request.Username,
 		Email:    request.Email,
-		Password: request.Password,
+		Username: request.Username,
 	})
-
-	helper.PanicIfError(err)
-
-	return web.User{
-		ID:       user.ID,
-		FullName: user.FullName,
-		Username: user.Username,
-		Email:    user.Email,
-		Password: user.Password,
-		ImageUrl: user.ImageUrl,
+	if err != nil {
+		return response, err
 	}
+
+	return web.UserResponse{
+		ID:       userResponse.ID,
+		FullName: userResponse.FullName,
+		Username: userResponse.Username,
+		Email:    userResponse.Email,
+		Role:     userResponse.Role,
+		ImageUrl: userResponse.ImageUrl,
+	}, nil
 }
 
-func (service *UserServiceImpl) Delete(ctx context.Context, userID uint) {
+func (service *UserServiceImpl) UpdatePassword(ctx context.Context, request web.UserUpdatePasswordRequest) (response web.UserResponse, err error) {
+	var user domain.User
+	user.ID = request.ID
+
+	_, err = service.UserRepository.FindByID(ctx, user.ID)
+	if err != nil {
+		return response, err
+	}
+
+	userResponse, err := service.UserRepository.Update(ctx, domain.User{
+		Model: gorm.Model{
+			ID: user.ID,
+		},
+		Password: request.Password,
+	})
+	if err != nil {
+		return response, err
+	}
+
+	return web.UserResponse{
+		ID:       userResponse.ID,
+		FullName: userResponse.FullName,
+		Username: userResponse.Username,
+		Email:    userResponse.Email,
+		Role:     userResponse.Role,
+		ImageUrl: userResponse.ImageUrl,
+	}, nil
+}
+
+func (service *UserServiceImpl) UpdateImage(ctx context.Context, request web.UserUpdateImageRequest) (response web.UserResponse, err error) {
+	var user domain.User
+	user.ID = request.ID
+
+	_, err = service.UserRepository.FindByID(ctx, user.ID)
+	if err != nil {
+		return response, err
+	}
+
+	userResponse, err := service.UserRepository.Update(ctx, domain.User{
+		Model: gorm.Model{
+			ID: user.ID,
+		},
+		ImageUrl: request.ImageUrl,
+	})
+	if err != nil {
+		return response, err
+	}
+
+	return web.UserResponse{
+		ID:       userResponse.ID,
+		FullName: userResponse.FullName,
+		Username: userResponse.Username,
+		Email:    userResponse.Email,
+		Role:     userResponse.Role,
+		ImageUrl: userResponse.ImageUrl,
+	}, nil
+}
+
+func (service *UserServiceImpl) Delete(ctx context.Context, userID uint) error {
 	var user domain.User
 	user.ID = userID
 
-	err := service.UserRepository.Delete(ctx, user)
-	helper.PanicIfError(err)
+	return service.UserRepository.Delete(ctx, user)
 }
 
-func (service *UserServiceImpl) FindByID(ctx context.Context, userID uint) (response web.User, err error) {
+func (service *UserServiceImpl) FindByID(ctx context.Context, userID uint) (response web.UserResponse, err error) {
 	userResponse, err := service.UserRepository.FindByID(ctx, userID)
 	if err != nil {
 		return response, err
 	}
 
-	return web.User{
+	return web.UserResponse{
 		ID:       userResponse.ID,
 		FullName: userResponse.FullName,
 		Username: userResponse.Username,
 		Email:    userResponse.Email,
-		Password: userResponse.Password,
+		Role:     userResponse.Role,
+		ImageUrl: userResponse.ImageUrl,
 	}, nil
 }
 
-func (service *UserServiceImpl) FindByUsername(ctx context.Context, username string) web.User {
-	user, err := service.UserRepository.FindByUsername(ctx, username)
-	helper.PanicIfError(err)
-
-	return web.User{
-		ID:       user.ID,
-		FullName: user.FullName,
-		Username: user.Username,
-		Email:    user.Email,
-		Password: user.Password,
+func (service *UserServiceImpl) FindByUsername(ctx context.Context, username string) (response web.UserResponse, err error) {
+	userResponse, err := service.UserRepository.FindByUsername(ctx, username)
+	if err != nil {
+		return response, err
 	}
+
+	return web.UserResponse{
+		ID:       userResponse.ID,
+		FullName: userResponse.FullName,
+		Username: userResponse.Username,
+		Email:    userResponse.Email,
+		Role:     userResponse.Role,
+		ImageUrl: userResponse.ImageUrl,
+	}, nil
 }
 
-func (service *UserServiceImpl) FindAll(ctx context.Context) []web.User {
-	var newUser []web.User
+func (service *UserServiceImpl) FindAll(ctx context.Context) (responses []web.UserResponse, err error) {
+	userResponse, err := service.UserRepository.FindAll(ctx)
+	if err != nil {
+		return responses, err
+	}
 
-	user, err := service.UserRepository.FindAll(ctx)
-	helper.PanicIfError(err)
-
-	for _, data := range user {
-		newUser = append(newUser, web.User{
-			ID:       data.ID,
-			FullName: data.FullName,
-			Username: data.Username,
-			Email:    data.Email,
-			Password: data.Password,
+	for _, user := range userResponse {
+		responses = append(responses, web.UserResponse{
+			ID:       user.ID,
+			FullName: user.FullName,
+			Username: user.Username,
+			Email:    user.Email,
+			Role:     user.Role,
+			ImageUrl: user.ImageUrl,
 		})
 	}
-	return newUser
-
+	return responses, nil
 }

@@ -38,6 +38,9 @@ func NewRouter(server *app.Server) {
 
 	server.Echo.GET("/", homeController.Home)
 
+	// Files Endpoint
+	server.Echo.Static("/files/", "files")
+
 	// Authentication
 	server.Echo.POST("/register", authController.Register)
 	server.Echo.POST("/login", authController.Login)
@@ -48,9 +51,6 @@ func NewRouter(server *app.Server) {
 		Claims:     &helper.JwtCustomClaims{},
 		SigningKey: []byte(os.Getenv("JWT_SECRET")),
 	}))
-
-	// Files Endpoint
-	restricted.GET("/files/*", homeController.Files)
 
 	// Category Endpoint
 	categoryEndpoint := restricted.Group("/category")
@@ -70,7 +70,7 @@ func NewRouter(server *app.Server) {
 	productEndpoint.GET("/category/:categoryID", productController.FindByCategory)
 	productEndpoint.GET("/", productController.FindAll)
 
-	//User Endpoint
+	// User Endpoint
 	userEndpoint := restricted.Group("/user")
 	userEndpoint.PUT("/:userID", userController.Update)
 	userEndpoint.DELETE("/:userID", userController.Delete)

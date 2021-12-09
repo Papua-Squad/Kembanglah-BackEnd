@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	FilePath = "./files"
+	FilePath = "/files"
 )
 
 func SaveFile(filename string, file *multipart.FileHeader) (string, error) {

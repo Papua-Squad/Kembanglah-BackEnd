@@ -21,7 +21,3 @@ func (controller *HomeControllerImpl) Home(ctx echo.Context) error {
 		Data:    nil,
 	})
 }
-
-func (controller *HomeControllerImpl) Files(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "/files/*")
-}
