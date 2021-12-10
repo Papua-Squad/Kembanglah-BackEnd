@@ -21,5 +21,6 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	AuthToken string `json:"auth_token"`
+	AuthToken string           `json:"auth_token"`
+	Profile   RegisterResponse `json:"profile"`
 }

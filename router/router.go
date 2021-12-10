@@ -73,8 +73,10 @@ func NewRouter(server *app.Server) {
 	// User Endpoint
 	userEndpoint := restricted.Group("/user")
 	userEndpoint.PUT("/:userID", userController.Update)
+	userEndpoint.PUT("/:userID/password", userController.UpdatePassword)
+	userEndpoint.PUT("/:userID/image", userController.UpdateImage)
 	userEndpoint.DELETE("/:userID", userController.Delete)
 	userEndpoint.GET("/:userID", userController.FindByID)
-	userEndpoint.GET("/:username", userController.FindByUsername)
+	userEndpoint.GET("/search/:username", userController.FindByUsername)
 	userEndpoint.GET("/", userController.FindAll)
 }

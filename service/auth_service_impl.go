@@ -29,6 +29,12 @@ func (service *AuthServiceImpl) Login(ctx context.Context, request web.LoginRequ
 	token := helper.GenerateToken(userResponse)
 	return web.LoginResponse{
 		AuthToken: token,
+		Profile: web.RegisterResponse{
+			ID:       userResponse.ID,
+			FullName: userResponse.FullName,
+			Email:    userResponse.Email,
+			Username: userResponse.Username,
+		},
 	}, err
 }
 
