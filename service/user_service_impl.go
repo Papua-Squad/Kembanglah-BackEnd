@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"gorm.io/gorm"
+	"kembanglah/helper"
 	"kembanglah/model/domain"
 	"kembanglah/model/web"
 	"kembanglah/repository"
@@ -52,6 +53,7 @@ func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpda
 func (service *UserServiceImpl) UpdatePassword(ctx context.Context, request web.UserUpdatePasswordRequest) (response web.UserResponse, err error) {
 	var user domain.User
 	user.ID = request.ID
+	password, _ := helper.HashPassword(request.Password)
 
 	_, err = service.UserRepository.FindByID(ctx, user.ID)
 	if err != nil {
@@ -62,7 +64,7 @@ func (service *UserServiceImpl) UpdatePassword(ctx context.Context, request web.
 		Model: gorm.Model{
 			ID: user.ID,
 		},
-		Password: request.Password,
+		Password: password,
 	})
 	if err != nil {
 		return response, err
