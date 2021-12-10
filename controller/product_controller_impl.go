@@ -119,7 +119,7 @@ func (controller *ProductControllerImpl) Delete(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, web.Response{
 		Code:    http.StatusOK,
-		Message: "OK",
+		Message: "Product Deleted",
 	})
 }
 
