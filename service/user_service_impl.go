@@ -2,11 +2,12 @@ package service
 
 import (
 	"context"
-	"gorm.io/gorm"
 	"kembanglah/helper"
 	"kembanglah/model/domain"
 	"kembanglah/model/web"
 	"kembanglah/repository"
+
+	"gorm.io/gorm"
 )
 
 type UserServiceImpl struct {
@@ -34,7 +35,7 @@ func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpda
 		},
 		FullName: request.FullName,
 		Email:    request.Email,
-		Username: request.Username,
+		// Username: request.Username,
 	})
 	if err != nil {
 		return response, err

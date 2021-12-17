@@ -36,6 +36,10 @@ func NewRouter(server *app.Server) {
 	userService := service.NewUserService(userRepository)
 	userController := controller.NewUserController(userService)
 
+	addressRepository := repository.NewAddressRepository(server)
+	addressService := service.NewAddressService(addressRepository)
+	addressController := controller.NewAddressController(addressService)
+
 	server.Echo.GET("/", homeController.Home)
 
 	// Files Endpoint
@@ -79,4 +83,10 @@ func NewRouter(server *app.Server) {
 	userEndpoint.GET("/:userID", userController.FindByID)
 	userEndpoint.GET("/search/:username", userController.FindByUsername)
 	userEndpoint.GET("/", userController.FindAll)
+
+	//Address Endpoint
+	addressEndpoint := restricted.Group("/address")
+	addressEndpoint.POST("/", addressController.Create)
+	addressEndpoint.DELETE("/:addressID", addressController.Delete)
+	addressEndpoint.GET("/user/:userID", addressController.FindByUser)
 }

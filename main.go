@@ -19,6 +19,7 @@ func main() {
 		&domain.User{},
 		&domain.Product{},
 		&domain.Category{},
+		&domain.Address{},
 	)
 	helper.PanicIfError(err)
 

@@ -11,5 +11,6 @@ type Address struct {
 	City        string
 	ZipCode     uint
 	Country     string
-	CustomerID  uint
+	UserID      uint
+	//User        User `gorm:"foreignkey:UserID;constraint:onUpdate:CASCADE,onDelete:CASCADE" `
 }

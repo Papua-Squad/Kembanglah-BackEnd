@@ -13,7 +13,7 @@ type UserUpdateRequest struct {
 	ID       uint   `json:"id"`
 	FullName string `json:"full_name" form:"full_name" validate:"required"`
 	Email    string `json:"email" form:"email" validate:"required,email"`
-	Username string `json:"username" form:"username" validate:"required"`
+	// Username string `json:"username" form:"username" validate:"required"`
 }
 
 type UserUpdatePasswordRequest struct {
