@@ -39,7 +39,7 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 	seller := claims.Id
 	fmt.Println(claims)
 
-	pathFile, err := helper.SaveFile("product_"+random.String(8, random.Alphabetic), file)
+	pathFile, err := helper.SaveFile("product_"+random.String(8, random.Alphabetic)+".jpg", file)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,

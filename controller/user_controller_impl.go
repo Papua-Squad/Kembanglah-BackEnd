@@ -83,7 +83,7 @@ func (controller *UserControllerImpl) UpdatePassword(ctx echo.Context) error {
 func (controller *UserControllerImpl) UpdateImage(ctx echo.Context) error {
 	user := new(web.UserUpdateImageRequest)
 	file, err := ctx.FormFile("image")
-	pathFile, err := helper.SaveFile("profile_"+random.String(8, random.Alphabetic), file)
+	pathFile, err := helper.SaveFile("profile_"+random.String(8, random.Alphabetic+".jpg"), file)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, web.Response{
 			Code:    http.StatusInternalServerError,
