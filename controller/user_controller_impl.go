@@ -93,7 +93,7 @@ func (controller *UserControllerImpl) UpdateImage(ctx echo.Context) error {
 	}
 	userID, _ := strconv.Atoi(ctx.Param("userID"))
 	user.ID = uint(userID)
-	user.ImageUrl = pathFile
+	user.ImageUrl = "http://159.223.82.24:3000/files/" + pathFile
 
 	if err := helper.BindAndValidate(ctx, user); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{

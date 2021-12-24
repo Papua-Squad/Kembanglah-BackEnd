@@ -49,7 +49,7 @@ func (controller *ProductControllerImpl) Create(ctx echo.Context) error {
 	}
 
 	product := new(web.ProductRequest)
-	product.ImageUrl = pathFile
+	product.ImageUrl = "http://159.223.82.24:3000/files/" + pathFile
 	product.SellerID = seller
 
 	if err := helper.BindAndValidate(ctx, product); err != nil {
