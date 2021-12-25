@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
 	"kembanglah/config"
@@ -21,5 +22,10 @@ func NewDatabase(config *config.Config) *gorm.DB {
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	helper.PanicIfError(err)
+	return db
+}
+
+func TestDatabase() *gorm.DB {
+	db, _ := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 	return db
 }

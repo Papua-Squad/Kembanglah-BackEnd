@@ -12,7 +12,7 @@ func main() {
 	newConfig, err := config.NewConfig()
 	helper.PanicIfError(err)
 
-	server := app.NewServer(newConfig)
+	server := app.NewServer(newConfig, true)
 
 	// Migrate database
 	err = server.DB.Migrator().AutoMigrate(
@@ -20,6 +20,7 @@ func main() {
 		&domain.Product{},
 		&domain.Category{},
 		&domain.Address{},
+		&domain.Transaction{},
 	)
 	helper.PanicIfError(err)
 

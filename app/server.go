@@ -13,11 +13,19 @@ type Server struct {
 	Config *config.Config
 }
 
-func NewServer(config *config.Config) *Server {
-	return &Server{
-		Echo:   echo.New(),
-		DB:     NewDatabase(config),
-		Config: config,
+func NewServer(config *config.Config, devmode bool) *Server {
+	if devmode {
+		return &Server{
+			Echo:   echo.New(),
+			DB:     TestDatabase(),
+			Config: config,
+		}
+	} else {
+		return &Server{
+			Echo:   echo.New(),
+			DB:     NewDatabase(config),
+			Config: config,
+		}
 	}
 }
 
