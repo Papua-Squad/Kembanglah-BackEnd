@@ -83,7 +83,10 @@ func (controller *UserControllerImpl) UpdatePassword(ctx echo.Context) error {
 func (controller *UserControllerImpl) UpdateImage(ctx echo.Context) error {
 	user := new(web.UserUpdateImageRequest)
 	file, err := ctx.FormFile("image")
-	pathFile, err := helper.SaveFile("profile_"+random.String(8, random.Alphabetic+".jpg"), file)
+
+	filename := "user_" + random.String(8, random.Alphabetic) + ".jpg"
+
+	err = helper.SaveFile(filename, file)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, web.Response{
 			Code:    http.StatusInternalServerError,
@@ -93,7 +96,7 @@ func (controller *UserControllerImpl) UpdateImage(ctx echo.Context) error {
 	}
 	userID, _ := strconv.Atoi(ctx.Param("userID"))
 	user.ID = uint(userID)
-	user.ImageUrl = "http://159.223.82.24:3000/files/" + pathFile
+	user.ImageUrl = "http://159.223.82.24:3000/files/" + filename
 
 	if err := helper.BindAndValidate(ctx, user); err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{

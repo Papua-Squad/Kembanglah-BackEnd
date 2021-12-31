@@ -7,11 +7,11 @@ import (
 
 type Transaction struct {
 	gorm.Model
-	ProductID      pq.Int64Array `gorm:"type:integer[]"`
-	SellerID       uint
-	CustomerID     uint
-	Address        string
-	PaymentMethode string
-	StatusCode     uint
-	Status         string
+	ProductsID      pq.Int64Array `gorm:"type:integer[]"`
+	SellerID        uint
+	CustomerID      uint
+	ShippingAddress string
+	PaymentMethode  string
+	Status          string
+	SubTotal        int
 }
