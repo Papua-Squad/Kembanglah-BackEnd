@@ -10,7 +10,7 @@ type TransactionRepositoryImpl struct {
 	server *app.Server
 }
 
-func NewTransactionRepositoryImpl(server *app.Server) TransactionRepository {
+func NewTransactionRepository(server *app.Server) TransactionRepository {
 	return &TransactionRepositoryImpl{server: server}
 }
 

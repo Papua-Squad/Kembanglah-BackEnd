@@ -40,6 +40,10 @@ func NewRouter(server *app.Server) {
 	addressService := service.NewAddressService(addressRepository)
 	addressController := controller.NewAddressController(addressService)
 
+	transactionRepository := repository.NewTransactionRepository(server)
+	transactionService := service.NewTransactionService(transactionRepository, productRepository)
+	transactionController := controller.NewTransactionController(transactionService)
+
 	server.Echo.GET("/", homeController.Home)
 
 	// Files Endpoint
@@ -84,9 +88,18 @@ func NewRouter(server *app.Server) {
 	userEndpoint.GET("/search/:username", userController.FindByUsername)
 	userEndpoint.GET("/", userController.FindAll)
 
-	//Address Endpoint
+	// Address Endpoint
 	addressEndpoint := restricted.Group("/address")
 	addressEndpoint.POST("/", addressController.Create)
 	addressEndpoint.DELETE("/:addressID", addressController.Delete)
 	addressEndpoint.GET("/user/:userID", addressController.FindByUser)
+
+	// Transaction Endpoint
+	transactionEndpoint := restricted.Group("/transaction")
+	transactionEndpoint.POST("/", transactionController.Save)
+	transactionEndpoint.POST("/:transactionID", transactionController.Update)
+	transactionEndpoint.DELETE("/:transactionID", transactionController.Delete)
+	transactionEndpoint.GET("/seller/:sellerID", transactionController.FindBySeller)
+	transactionEndpoint.GET("/customer/:customerID", transactionController.FindByCustomer)
+	transactionEndpoint.GET("/", transactionController.FindAll)
 }
