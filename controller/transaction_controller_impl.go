@@ -131,7 +131,7 @@ func (controller *TransactionControllerImpl) FindByCustomer(ctx echo.Context) er
 func (controller *TransactionControllerImpl) FindByID(ctx echo.Context) error {
 	transactionID, _ := strconv.Atoi(ctx.Param("transactionID"))
 
-	transactionResponse, err := controller.TransactionService.FindByCustomer(ctx.Request().Context(), uint(transactionID))
+	transactionResponse, err := controller.TransactionService.FindByID(ctx.Request().Context(), uint(transactionID))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, web.Response{
 			Code:    http.StatusBadRequest,
