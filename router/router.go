@@ -99,6 +99,7 @@ func NewRouter(server *app.Server) {
 	transactionEndpoint.POST("/", transactionController.Save)
 	transactionEndpoint.POST("/:transactionID", transactionController.Update)
 	transactionEndpoint.DELETE("/:transactionID", transactionController.Delete)
+	transactionEndpoint.GET("/:transactionID", transactionController.FindByID)
 	transactionEndpoint.GET("/seller/:sellerID", transactionController.FindBySeller)
 	transactionEndpoint.GET("/customer/:customerID", transactionController.FindByCustomer)
 	transactionEndpoint.GET("/", transactionController.FindAll)

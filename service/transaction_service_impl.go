@@ -21,6 +21,7 @@ func (service *TransactionServiceImpl) Save(ctx context.Context, request web.Cre
 	var productsId []int64
 	var products []web.ProductResponse
 	var subTotal int
+	var qty int
 	for _, id := range request.ProductsID {
 		productsId = append(productsId, int64(id))
 		product, _ := service.ProductRepository.FindByID(ctx, uint(id))
@@ -37,6 +38,7 @@ func (service *TransactionServiceImpl) Save(ctx context.Context, request web.Cre
 		})
 
 		subTotal += product.Price
+		qty += 1
 	}
 	transactionRequest := domain.Transaction{
 		ProductsID:      productsId,
@@ -46,6 +48,7 @@ func (service *TransactionServiceImpl) Save(ctx context.Context, request web.Cre
 		PaymentMethode:  request.PaymentMethode,
 		Status:          request.Status,
 		SubTotal:        subTotal,
+		Qty:             qty,
 	}
 
 	transactionResponse, err := service.TransactionRepository.Save(ctx, transactionRequest)
@@ -60,7 +63,8 @@ func (service *TransactionServiceImpl) Save(ctx context.Context, request web.Cre
 		CustomerID:      transactionResponse.CustomerID,
 		ShippingAddress: transactionResponse.ShippingAddress,
 		PaymentMethode:  transactionResponse.PaymentMethode,
-		SubTotal:        subTotal,
+		SubTotal:        transactionResponse.SubTotal,
+		Qty:             transactionResponse.Qty,
 		Status:          transactionResponse.Status,
 	}, nil
 
@@ -85,7 +89,6 @@ func (service *TransactionServiceImpl) Update(ctx context.Context, request web.U
 
 	// Init products
 	var products []web.ProductResponse
-	var subTotal int
 
 	for _, id := range transactionResponse.ProductsID {
 		product, _ := service.ProductRepository.FindByID(ctx, uint(id))
@@ -101,7 +104,6 @@ func (service *TransactionServiceImpl) Update(ctx context.Context, request web.U
 			ImageUrl:    product.ImageUrl,
 		})
 
-		subTotal += product.Price
 	}
 
 	return web.TransactionResponse{
@@ -111,7 +113,8 @@ func (service *TransactionServiceImpl) Update(ctx context.Context, request web.U
 		CustomerID:      transactionResponse.CustomerID,
 		ShippingAddress: transactionResponse.ShippingAddress,
 		PaymentMethode:  transactionResponse.PaymentMethode,
-		SubTotal:        subTotal,
+		SubTotal:        transactionResponse.SubTotal,
+		Qty:             transactionResponse.Qty,
 		Status:          transactionResponse.Status,
 	}, nil
 }
@@ -131,7 +134,6 @@ func (service *TransactionServiceImpl) FindBySeller(ctx context.Context, sellerI
 
 	for _, transaction := range transactionResponse {
 		var products []web.ProductResponse
-		subTotal := 0
 		for _, id := range transaction.ProductsID {
 
 			product, _ := service.ProductRepository.FindByID(ctx, uint(id))
@@ -146,7 +148,6 @@ func (service *TransactionServiceImpl) FindBySeller(ctx context.Context, sellerI
 				SellerID:    product.SellerID,
 				ImageUrl:    product.ImageUrl,
 			})
-			subTotal += product.Price
 		}
 
 		responses = append(responses, web.TransactionResponse{
@@ -156,11 +157,11 @@ func (service *TransactionServiceImpl) FindBySeller(ctx context.Context, sellerI
 			CustomerID:      transaction.CustomerID,
 			ShippingAddress: transaction.ShippingAddress,
 			PaymentMethode:  transaction.PaymentMethode,
-			SubTotal:        subTotal,
+			SubTotal:        transaction.SubTotal,
+			Qty:             transaction.Qty,
 			Status:          transaction.Status,
 		})
 		// reset
-		subTotal = 0
 		products = nil
 	}
 
@@ -175,7 +176,6 @@ func (service *TransactionServiceImpl) FindByCustomer(ctx context.Context, custo
 
 	for _, transaction := range transactionResponse {
 		var products []web.ProductResponse
-		subTotal := 0
 		for _, id := range transaction.ProductsID {
 
 			product, _ := service.ProductRepository.FindByID(ctx, uint(id))
@@ -190,7 +190,6 @@ func (service *TransactionServiceImpl) FindByCustomer(ctx context.Context, custo
 				SellerID:    product.SellerID,
 				ImageUrl:    product.ImageUrl,
 			})
-			subTotal += product.Price
 		}
 
 		responses = append(responses, web.TransactionResponse{
@@ -200,11 +199,11 @@ func (service *TransactionServiceImpl) FindByCustomer(ctx context.Context, custo
 			CustomerID:      transaction.CustomerID,
 			ShippingAddress: transaction.ShippingAddress,
 			PaymentMethode:  transaction.PaymentMethode,
-			SubTotal:        subTotal,
+			SubTotal:        transaction.SubTotal,
+			Qty:             transaction.Qty,
 			Status:          transaction.Status,
 		})
 		// reset
-		subTotal = 0
 		products = nil
 	}
 
@@ -213,7 +212,6 @@ func (service *TransactionServiceImpl) FindByCustomer(ctx context.Context, custo
 
 func (service *TransactionServiceImpl) FindByID(ctx context.Context, transactionID uint) (response web.TransactionResponse, err error) {
 	var products []web.ProductResponse
-	var subTotal int
 
 	transactionResponse, err := service.TransactionRepository.FindByID(ctx, transactionID)
 	if err != nil {
@@ -234,7 +232,6 @@ func (service *TransactionServiceImpl) FindByID(ctx context.Context, transaction
 			ImageUrl:    product.ImageUrl,
 		})
 
-		subTotal += product.Price
 	}
 
 	return web.TransactionResponse{
@@ -244,7 +241,8 @@ func (service *TransactionServiceImpl) FindByID(ctx context.Context, transaction
 		CustomerID:      transactionResponse.CustomerID,
 		ShippingAddress: transactionResponse.ShippingAddress,
 		PaymentMethode:  transactionResponse.PaymentMethode,
-		SubTotal:        subTotal,
+		SubTotal:        transactionResponse.SubTotal,
+		Qty:             transactionResponse.Qty,
 		Status:          transactionResponse.Status,
 	}, nil
 
@@ -258,7 +256,6 @@ func (service *TransactionServiceImpl) FindAll(ctx context.Context) (responses [
 
 	for _, transaction := range transactionResponse {
 		var products []web.ProductResponse
-		subTotal := 0
 		for _, id := range transaction.ProductsID {
 
 			product, _ := service.ProductRepository.FindByID(ctx, uint(id))
@@ -273,7 +270,6 @@ func (service *TransactionServiceImpl) FindAll(ctx context.Context) (responses [
 				SellerID:    product.SellerID,
 				ImageUrl:    product.ImageUrl,
 			})
-			subTotal += product.Price
 		}
 
 		responses = append(responses, web.TransactionResponse{
@@ -283,11 +279,11 @@ func (service *TransactionServiceImpl) FindAll(ctx context.Context) (responses [
 			CustomerID:      transaction.CustomerID,
 			ShippingAddress: transaction.ShippingAddress,
 			PaymentMethode:  transaction.PaymentMethode,
-			SubTotal:        subTotal,
+			SubTotal:        transaction.SubTotal,
+			Qty:             transaction.Qty,
 			Status:          transaction.Status,
 		})
 		// reset
-		subTotal = 0
 		products = nil
 	}
 

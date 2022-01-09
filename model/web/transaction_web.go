@@ -22,5 +22,6 @@ type TransactionResponse struct {
 	ShippingAddress string            `json:"shipping_address,omitempty"`
 	PaymentMethode  string            `json:"payment_methode,omitempty"`
 	SubTotal        int               `json:"sub_total,omitempty"`
+	Qty             int               `json:"qty,omitempty"`
 	Status          string            `json:"status,omitempty"`
 }

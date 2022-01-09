@@ -14,4 +14,5 @@ type Transaction struct {
 	PaymentMethode  string
 	Status          string
 	SubTotal        int
+	Qty             int
 }
