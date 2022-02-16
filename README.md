@@ -1,5 +1,19 @@
 # Dokumentasi BE
 BackEnd dapat diakses di http://159.223.82.24:3000
+
+# Requirements
+1. [Golang](https://duckduckgo.com).
+
+# How to run?
+
+## No Docker
+1. Git Clone this repository
+2. run main.go
+
+## With Docker
+1. docker-compose up
+2. for more [details](https://docs.docker.com/compose/gettingstarted/)
+
 # Endpoint
 
 ### Login 

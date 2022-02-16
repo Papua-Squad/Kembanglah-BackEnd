@@ -12,7 +12,7 @@ func main() {
 	newConfig, err := config.NewConfig()
 	helper.PanicIfError(err)
 
-	server := app.NewServer(newConfig, false)
+	server := app.NewServer(newConfig, true)
 
 	// Migrate database
 	err = server.DB.Migrator().AutoMigrate(
